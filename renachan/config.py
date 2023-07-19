@@ -18,7 +18,7 @@ def bot_prefix():
 
 
 def bot_status():
-    default_prefix = f'{", ".join(renachan.config.bot_prefix())} | Teapot.py {renachan.version()}'
+    default_prefix = f'{", ".join(renachan.config.bot_prefix())} | RenaChan.py {renachan.version()}'
     try:
         return eval(os.getenv('BOT_STATUS', default_prefix))
     except:

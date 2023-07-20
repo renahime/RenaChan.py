@@ -1,11 +1,11 @@
-from sqlalchemy import create_engine
+import os
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, DateTime, Table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 from datetime import datetime
 
 Base = declarative_base()
-engine = create_engine('sqlite:///dev.db', echo=True)
 
 
 class Server(Base):
@@ -22,7 +22,7 @@ class Server(Base):
       owner = relationship('Owner', back_populates='servers')
 
 class Owner(Base):
-      __tablename__ = 'users'
+      __tablename__ = 'owners'
       __table_args__ = {'extend_existing': True}
       id = Column(Integer, primary_key=True)
       username = Column(Integer)
@@ -32,8 +32,8 @@ class Owner(Base):
 
       def to_dict(self):
           return {
-              'owner_id': self.user_id,
-              'username': self.user_name,
+              'owner_id': self.id,
+              'username': self.username,
               'user_discriminator': self.user_discriminator
               }
 
@@ -44,15 +44,15 @@ class Member(Base):
     username = Column(Integer)
     user_discriminator = Column(Integer)
 
-    session = relationship('Session', back_populates='user')
-    to_do = relationship('ToDo', back_populates='user')
-    finder = relationship('Finder', back_populates='user')
-    server = relationship('Server', back_populates='user')
+    session = relationship('Session', back_populates='member')
+    to_do = relationship('ToDo', back_populates='member')
+    finder = relationship('Finder', back_populates='member')
+    server = relationship('Server', back_populates='member')
 
     def to_dict(self):
           return {
-              'user_id': self.user_id,
-              'user_name': self.user_name,
+              'user_id': self.id,
+              'user_name': self.username,
               'user_discriminator': self.user_discriminator
               }
 
@@ -83,6 +83,11 @@ i_like = Table(
         primary_key=True
     ),
     Column(
+         'member.id',
+         Integer,
+         ForeignKey("members.id")
+    ),
+    Column(
         "i_like_url",
         String
     )
@@ -101,7 +106,7 @@ class Finder(Base):
       chosen_url = Column(String)
       last_time = Column(DateTime, nullable=False, default=datetime.utcnow)
 
-      owner = relationship('User', back_populates='finder')
+      member = relationship('Member', back_populates='finder')
       channel = relationship('Channel', back_populates='finder')
       server = relationship('Server', back_populates='finder')
 
@@ -125,7 +130,7 @@ class Session(Base):
       date = Column(DateTime, nullable=False, default=datetime.utcnow)
       duration = Column(Integer)
 
-      owner = relationship('User', back_populates='session')
+      member = relationship('Member', back_populates='session')
       channel = relationship('Channel', back_populates='session')
 
       def to_dict(self):
@@ -148,7 +153,7 @@ class ToDo(Base):
       date = Column(DateTime, nullable=False, default=datetime.utcnow)
       duration = Column(DateTime)
 
-      owner = relationship('User', back_populates='to_do')
+      member = relationship('User', back_populates='to_do')
       channel = relationship('Channel', back_populates='to_do')
 
       def to_dict(self):
@@ -161,10 +166,29 @@ class ToDo(Base):
               'duration': self.duration
           }
 
-def create_database():
-  #  connect in memory sqlite database or you can connect your own database
-  Base.metadata.create_all(engine)
+def get_database():
+    # Check if dev.db file already exists
+    db_file = "dev.db"
+    if os.path.exists(db_file):
+        # If the file exists, try to connect to the database and check if tables exist
+        engine = create_engine(f"sqlite:///{db_file}")
+        metadata = MetaData(bind=engine)
 
-  # create session and bind engine
-  session = sessionmaker(bind=engine)
-  return session
+        # Define your table names here
+        table_names = ["owners", "members", "servers", "finders", "to_do", "i_like"]
+
+        # Check if all tables exist in the database
+        table_exists = all(engine.has_table(table_name) for table_name in table_names)
+
+        if table_exists:
+            # If all tables exist, create and return a scoped session
+            Session = scoped_session(sessionmaker(bind=engine))
+            return Session
+
+    # If the database or tables don't exist, create a new database and tables
+    engine = create_engine(f"sqlite:///{db_file}")
+    Base.metadata.create_all(engine)
+
+    # Create and return a scoped session
+    Session = scoped_session(sessionmaker(bind=engine))
+    return Session

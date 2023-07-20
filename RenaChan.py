@@ -58,9 +58,7 @@ if os.getenv('CONFIG_VERSION') != renachan.config_version():
 print("Initializing bot...")
 
 if renachan.config.storage_type() == "sqlite":
-    db = renachan.managers.database.create_database()
-    print(
-        f"Database created and ready to use")
+    db = renachan.database.get_database()
 
 
 intents = discord.Intents.default()

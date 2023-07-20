@@ -8,34 +8,6 @@ def __init__(bot, db):
     on_guild_join(bot, db)
     # on_command_error(bot)
 
-
-# def join(bot, db):
-#     @bot.event
-#     async def on_member_join(member):
-#         if renachan.config.storage_type() == "sqlite":
-#             new_member = renachan.database.User()
-#             try:
-#                 db.execute(
-#                     "INSERT INTO `guild_logs`(timestamp, guild_id, channel_id, user_id, action_type) VALUES(%s, %s, %s, %s, %s)",
-#                     (renachan.time(), member.guild.id, member.channel.id, member.id, "MEMBER_JOIN"))
-#                 db.commit()
-#             except Exception as e:
-#                 print(e)
-
-
-# def leave(bot, session):
-#     @bot.event
-#     async def on_member_remove(member):
-#         if renachan.config.storage_type() == "mysql":
-#             try:
-#                 db.execute(
-#                     "INSERT INTO `guild_logs`(timestamp, guild_id, channel_id, user_id, action_type) VALUES(%s, %s, %s, %s, %s)",
-#                     (renachan.time(), member.guild.id, member.channel.id, member.id, "MEMBER_REMOVE"))
-#                 database.commit()
-#             except Exception as e:
-#                 print(e)
-
-
 def on_guild_join(bot, db):
     @bot.event
     async def on_guild_join(guild):
@@ -49,12 +21,12 @@ def on_guild_join(bot, db):
             server = renachan.database.Server(id=server_id,server_name=server_name, user=owner)
             general_channel = next((channel for channel in guild.text_channels if channel.name.lower() == 'general'), None)
             for member in guild.members:
-                user = renachan.database.Member(id=member.id, name=member.name)
-                db.add(user)
+                member = renachan.database.Member(id=member.id, name=member.name, server=server)
+                db.add(member)
 
             # Log all channels in the server
             for channel in guild.channels:
-                channel = renachan.database.Channel(id=channel.id, name=channel.name)
+                channel = renachan.database.Channel(id=channel.id, name=channel.name, server=server)
                 db.add(channel)
 
             db.commit()

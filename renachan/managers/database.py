@@ -1,194 +1,99 @@
 import os
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, DateTime, Table
+from sqlalchemy import create_engine, MetaData, Table, Column, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship, scoped_session
-from datetime import datetime
+from sqlalchemy.orm import sessionmaker, scoped_session
+from alembic.config import Config
+from alembic import command
+import shutil
 
 Base = declarative_base()
 
+# Get the base directory path of the current file (database.py)
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-class Server(Base):
-      __tablename__ = 'servers'
-      __table_args__ = {'extend_existing': True}
-      id = Column(Integer, primary_key=True)
-      owner_id = Column(Integer, ForeignKey("users.id"))
-      server_name = Column(String)
+# Construct the path to the renachan folder
+renachan_dir = os.path.join(base_dir, 'renachan')
 
-      session = relationship('Session', back_populates='server')
-      to_do = relationship('ToDo', back_populates='server')
-      finder = relationship('Finder', back_populates='server')
-      channels = relationship('Channel', back_populates='server')
-      owner = relationship('Owner', back_populates='servers')
+# Construct the path to the dev.db file inside the renachan directory
+db_file = "dev.db"
+db_path = os.path.join(renachan_dir, db_file)
 
-class Owner(Base):
-      __tablename__ = 'owners'
-      __table_args__ = {'extend_existing': True}
-      id = Column(Integer, primary_key=True)
-      username = Column(Integer)
-      user_discriminator = Column(Integer)
+# Construct the path to the alembic directory inside the renachan folder
+alembic_dir = os.path.join(base_dir, 'alembic')
 
-      server = relationship('Server', back_populates='owner')
+# Create the engine and metadata objects once
+engine = create_engine(f"sqlite:///{db_path}")
+metadata = MetaData(bind=engine)
 
-      def to_dict(self):
-          return {
-              'owner_id': self.id,
-              'username': self.username,
-              'user_discriminator': self.user_discriminator
-              }
+def create_migration_version_file():
+    # Check if the alembic directory exists, and if not, create it
+    if not os.path.exists(alembic_dir):
+        os.makedirs(alembic_dir)
 
-class Member(Base):
-    __tablename__ = 'members'
-    __table_args__ = {'extended_existing': True}
-    id = Column(Integer, primary_key=True)
-    username = Column(Integer)
-    user_discriminator = Column(Integer)
+    # Check if the 'versions' directory exists in the alembic folder, and if not, create it
+    alembic_versions_dir = os.path.join(alembic_dir, 'versions')
+    if not os.path.exists(alembic_versions_dir):
+        os.makedirs(alembic_versions_dir)
 
-    session = relationship('Session', back_populates='member')
-    to_do = relationship('ToDo', back_populates='member')
-    finder = relationship('Finder', back_populates='member')
-    server = relationship('Server', back_populates='member')
+    # Create and configure the Alembic configuration
+    alembic_cfg = Config(os.path.join(base_dir, "alembic.ini"))
+    alembic_cfg.set_main_option("script_location", os.path.join(base_dir, "alembic"))
 
-    def to_dict(self):
-          return {
-              'user_id': self.id,
-              'user_name': self.username,
-              'user_discriminator': self.user_discriminator
-              }
+    # Get the current alembic version from the database
+    current_version = command.current(alembic_cfg, revision='head')
 
-class Channel(Base):
-      __tablename__ = 'channels'
-      __table_args__ = {'extend_existing': True}
-      id = Column(Integer, primary_key=True)
-      server_id = Column(Integer, ForeignKey('servers.id'))
-      channel_name = Column(String)
-
-      session = relationship('Channel', back_populates='channel')
-      finder = relationship('Finder', back_populates='channel')
-      to_do = relationship('ToDo', back_populates='channel')
-      server = relationship('Server', back_populates='chennels')
-
-      def to_dict(self):
-          return {
-              'channel_id': self.channel_id,
-              'channel_name': self.channel_name,
-              }
-
-i_like = Table(
-    "i_like", Base.metadata,
-    Column(
-        "finder_id",
-        Integer,
-        ForeignKey("finders.finder_id"),  # Update the foreign key reference to 'finders.finder_id'
-        primary_key=True
-    ),
-    Column(
-         'member.id',
-         Integer,
-         ForeignKey("members.id")
-    ),
-    Column(
-        "i_like_url",
-        String
-    )
-)
+    # Check if the current version is None (no migration version found) or different from the latest version
+    if not current_version or current_version != renachan.version():
+        # Generate a new migration script based on the differences between the current schema and the models
+        command.revision(alembic_cfg, autogenerate=True, message="initial migration")
 
 
+def check_migration_version_files():
+    # Check if the 'alembic_version' table exists in the database
+    version_table = Table('alembic_version', metadata, Column('version_num', String(32), nullable=False))
+    return engine.dialect.has_table(engine, version_table.name)
 
-class Finder(Base):
-      __tablename__ = 'finders'
-      __table_args__ = {'extend_existing': True}
-      finder_id = Column(Integer, primary_key=True)
-      user_id = Column(Integer, ForeignKey('users.id'))
-      channel_id = Column(Integer, ForeignKey('channels.id'))
-      server_id = Column(Integer, ForeignKey('servers.id'))
-      date = Column(DateTime, nullable=False, default=datetime.utcnow)
-      chosen_url = Column(String)
-      last_time = Column(DateTime, nullable=False, default=datetime.utcnow)
+def run_migrations(session=None):
+    alembic_cfg = Config(os.path.join(base_dir, "alembic.ini"))
+    alembic_cfg.set_main_option("script_location", os.path.join(base_dir, "alembic"))
 
-      member = relationship('Member', back_populates='finder')
-      channel = relationship('Channel', back_populates='finder')
-      server = relationship('Server', back_populates='finder')
+    # Check if there are any migration version files inside the 'alembic/versions' directory
+    if not check_migration_version_files():
+        # If there are no migration version files, create and run migrations
+        command.upgrade(alembic_cfg, "head", sql=False, tag=None)
+    else:
+        # If the 'alembic_version' table exists in the database, perform migrations if needed
+        with session.begin():
+            if not command.current(alembic_cfg, revision='head', connection=session.connection()):
+                command.upgrade(alembic_cfg, "head", sql=False, tag=None)
 
-      def to_dict(self):
-          return {
-              'session_id': self.finder_id,
-              'user_id': self.user_id,
-              'channel_id': self.channel_id,
-              'date': self.date,
-              'chosen': self.chosen,
-              'last_time': self.last_time
-          }
+def initialize_database():
+    if not os.path.exists(db_path):
+        # If the database does not exist, create a new database and tables in the RenaChan folder
+        Base.metadata.create_all(engine)
+        # Create the migration version file
+        create_migration_version_file()
+        # Perform the initial migration
+        run_migrations()
+    else:
+        # If the database exists, check if it's the correct version and perform migrations if needed
+        alembic_cfg = Config(os.path.join(base_dir, "alembic.ini"))
+        alembic_cfg.set_main_option("script_location", os.path.join(base_dir, "alembic"))
 
-class Session(Base):
-      __tablename__ = 'channels'
-      __table_args__ = {'extend_existing': True}
-      session_id = Column(Integer, primary_key=True)
-      user_id = Column(Integer, ForeignKey('users.id'))
-      channel_id = Column(Integer, ForeignKey('channels.id'))
-      server_id = Column(Integer, ForeignKey('servers.id'))
-      date = Column(DateTime, nullable=False, default=datetime.utcnow)
-      duration = Column(Integer)
-
-      member = relationship('Member', back_populates='session')
-      channel = relationship('Channel', back_populates='session')
-
-      def to_dict(self):
-          return {
-              'session_id': self.session_id,
-              'user_id': self.user_id,
-              'date': self.date,
-              'duration': self.duration,
-              }
-
-class ToDo(Base):
-      __tablename__ = 'to_do'
-      __table_args__ = {'extend_existing': True}
-      todo_id = Column(Integer, primary_key=True)
-      user_id = Column(Integer, ForeignKey('users.id'))
-      channel_id = Column(Integer, ForeignKey('channels.id'))
-      server_id = Column(Integer, ForeignKey('servers.id'))
-      to_do = Column(String)
-      due = Column(DateTime)
-      date = Column(DateTime, nullable=False, default=datetime.utcnow)
-      duration = Column(DateTime)
-
-      member = relationship('User', back_populates='to_do')
-      channel = relationship('Channel', back_populates='to_do')
-
-      def to_dict(self):
-          return {
-              'session_id': self.todo_id,
-              'user_id': self.user_id,
-              'to_do': self.to_do,
-              'date': self.date,
-              'due' :self.due,
-              'duration': self.duration
-          }
+        # Check if there are any migration version files inside the 'alembic/versions' directory
+        if not check_migration_version_files():
+            create_migration_version_file()
+            run_migrations()
+        else:
+            # If the 'alembic_version' table exists in the database, perform migrations if needed
+            with engine.begin() as connection:
+                if not command.current(alembic_cfg, revision='head', connection=connection):
+                    run_migrations()
 
 def get_database():
-    # Check if dev.db file already exists
-    db_file = "dev.db"
-    if os.path.exists(db_file):
-        # If the file exists, try to connect to the database and check if tables exist
-        engine = create_engine(f"sqlite:///{db_file}")
-        metadata = MetaData(bind=engine)
-
-        # Define your table names here
-        table_names = ["owners", "members", "servers", "finders", "to_do", "i_like"]
-
-        # Check if all tables exist in the database
-        table_exists = all(engine.has_table(table_name) for table_name in table_names)
-
-        if table_exists:
-            # If all tables exist, create and return a scoped session
-            Session = scoped_session(sessionmaker(bind=engine))
-            return Session
-
-    # If the database or tables don't exist, create a new database and tables
-    engine = create_engine(f"sqlite:///{db_file}")
-    Base.metadata.create_all(engine)
+    global engine
+    initialize_database()
 
     # Create and return a scoped session
     Session = scoped_session(sessionmaker(bind=engine))
-    return Session
+    return Session()

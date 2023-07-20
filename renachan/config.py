@@ -16,6 +16,10 @@ def bot_token():
 def bot_prefix():
     return os.getenv('BOT_PREFIX', '!rena ')
 
+def set_project_folder_as_env_variable():
+    project_folder = os.getcwd()
+    os.environ["RENA_PROJECT_FOLDER"] = project_folder
+
 
 def bot_status():
     default_prefix = f'{", ".join(renachan.config.bot_prefix())} | RenaChan.py {renachan.version()}'

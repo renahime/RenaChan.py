@@ -14,7 +14,7 @@ def bot_token():
 
 
 def bot_prefix():
-    return eval(os.getenv('BOT_PREFIX', "['/rena ']"))
+    return os.getenv('BOT_PREFIX', '!rena ')
 
 
 def bot_status():
@@ -27,10 +27,12 @@ def bot_status():
 def db_host():
     return os.environ['DB_HOST']
 
+def storage_type():
+    return os.environ['STORAGE_TYPE']
+
 
 def db_port():
     return os.getenv('DB_PORT', "5000")
-
 
 def db_schema():
     return os.environ['DB_SCHEMA']

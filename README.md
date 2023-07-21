@@ -1,8 +1,38 @@
 # RenaBot v0.1
 
-![RenaBot Logo](https://example.com/renabot_logo.png)
+![RenaBot Logo](https://64.media.tumblr.com/3187c397dcfb358d519e08c2d1d1dc0e/b87b3de4b1fdc93c-88/s540x810/cd31af08d128130a28bf7af87c4ea9c34acd2daf.gif)
 
 RenaBot is a customizable Discord bot created to help users set up their own bots without extensive programming knowledge. It provides an easy-to-use setup process that requires the bot token and user ID, allowing users to get their bot up and running quickly. The bot is designed to log data using a database and offers two initial functionalities: server information logging and a simple greeting response.
+
+## File Structure
+
+Here's the file structure of the RenaBot project:
+
+<details>
+<summary>Show File Structure</summary>
+RenaBot/
+├── RenaChan/
+│   ├── cogs
+│   │   ├── __init__.py
+│   │   ├── cmds.py
+│   │   └── tasks.py
+│   ├── managers/
+│   │   ├── database.py
+│   │   └── models.py
+│   ├── tools/
+│   │   ├── __init__.py
+│   │   └── session.py
+│   ├── __init__.py
+│   ├── session.py
+│   ├── config.py
+│   ├── dev.db
+│   ├── events.py
+│   ├── messages.py
+│   └── setup.py
+├── renachan.py
+├── .env
+├── file_structure.txt
+</details>
 
 ## Getting Started
 

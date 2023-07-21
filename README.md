@@ -35,6 +35,13 @@ RenaBot/
 │-- generate_glossary.py
 ```
 
+## Technology Used
+Python | GitHub API | SQL Alchemy | Discord.py | Discord API
+
+## Wiki Links
+- [Database Schema](https://github.com/renahime/RenaChan.py/wiki/Database-Schema)
+- [generate_glossary.py](https://github.com/renahime/RenaChan.py/wiki/generate_glossary.py)
+
 ## Activating Virtual Environment
 
 To ensure a clean and isolated environment for RenaBot's dependencies, it's recommended to set up a virtual environment. Below are the steps to create and activate a virtual environment on different operating systems:

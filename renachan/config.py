@@ -6,7 +6,7 @@ load_dotenv()
 
 
 def bot_owner():
-    return eval(os.getenv('BOT_OWNER', "216127021028212737"))
+    return eval(os.getenv('BOT_OWNER'))
 
 
 def bot_token():
@@ -29,17 +29,17 @@ def bot_status():
         return os.getenv('BOT_STATUS', default_prefix)
 
 def db_host():
-    return os.environ['DB_HOST']
+    return os.getenv['DB_HOST']
 
 def storage_type():
-    return os.environ['STORAGE_TYPE']
+    return os.getenv['STORAGE_TYPE']
 
 
 def db_port():
     return os.getenv('DB_PORT', "5000")
 
 def db_schema():
-    return os.environ['DB_SCHEMA']
+    return os.getenv['DB_SCHEMA']
 
 def db_user():
-    return os.environ['DB_USER']
+    return os.getenv['DB_USER']

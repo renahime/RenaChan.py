@@ -65,17 +65,7 @@ To set up RenaBot for your Discord server, follow these steps:
    - To obtain your user ID, enable Developer Mode in Discord's settings (User Settings > Advanced > Developer Mode).
    - Right-click on your username or nickname, and select "Copy ID" from the context menu. This will copy your user ID to the clipboard.
 
-2. **Starting RenaBot**
-
-   - Run the `renachan.py` script to start RenaBot:
-     ```
-     python renachan.py
-     ```
-   - Upon first run, RenaBot will prompt you for the bot token and user ID required for setup.
-   - RenaBot will create a `.env` file in the root directory and store the provided information for future use.
-   - If you encounter any issues during setup, refer to the `.env.example` file in the root directory for guidance.
-
-3. **Installing Dependencies**
+2. **Installing Dependencies**
 
    - Ensure you have Python 3.9 or later installed on your system.
    - It's recommended to set up a virtual environment for RenaBot to keep dependencies isolated. To create a virtual environment, navigate to the RenaBot directory and run:
@@ -87,20 +77,22 @@ To set up RenaBot for your Discord server, follow these steps:
      - On Windows: `venv\Scripts\activate`
      - On macOS/Linux: `source venv/bin/activate`
 
-4. **Installing Dependencies**
+3. **Starting Virtual Enviorment**
 
-   - Ensure you have Python 3.7 or later installed on your system.
+   - Ensure you have Python 3.9 or later installed on your system.
    - Navigate to the RenaBot directory and install the required Python packages by running the following command:
      ```
-     pip install -r requirements.txt
+     pipenv shell
      ```
 
-5. **Starting RenaBot**
+4. **Starting RenaBot**
    - Run the `renachan.py` script to start RenaBot:
      ```
      python renachan.py
      ```
-   - RenaBot is now active and will respond to the specified command prefix.
+   - Upon first run, RenaBot will prompt you for the bot token and user ID required for setup.
+   - RenaBot will create a `.env` file in the root directory and store the provided information for future use.
+   - If you encounter any issues during setup, refer to the `.env.example` file in the root directory for guidance.
 
 ## Current Functionalities
 
@@ -123,6 +115,7 @@ The following features are planned for future versions of RenaBot:
 - Database Flexibility: The ability to choose between using a local database such as SQLite or a more robust database system like MySQL, depending on your needs and preferences.
 - A todo list feature that will remind users of upcoming tasks and keep track of task completion.
 - A "harass" feature that can send notifications or messages to specific users for important communications.
+- A study session feature that will track the times you study and give data analyitics.
 - Data collection and machine learning capabilities to provide personalized recommendations (e.g., fashion recommendations).
 
 ## Contributing

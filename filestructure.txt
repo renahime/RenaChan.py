@@ -21,3 +21,4 @@ RenaBot/
 │-- .env
 │-- file_structure.txt
 │-- README.md
+│-- generate_glossary.py

@@ -37,8 +37,8 @@ RenaBot/
 Python | GitHub API | SQL Alchemy | Discord.py |
 
 ## Wiki Links
-[Database Schema](https://github.com/renahime/RenaChan.py/wiki/Database-Schema)
-[generate_glossary.py](https://github.com/renahime/RenaChan.py/wiki/generate_glossary.py)
+- [Database Schema](https://github.com/renahime/RenaChan.py/wiki/Database-Schema)
+- [generate_glossary.py](https://github.com/renahime/RenaChan.py/wiki/generate_glossary.py)
 
 ## Activating Virtual Environment
 

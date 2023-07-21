@@ -36,9 +36,11 @@ RenaBot/
 ```
 
 ## Technology Used
+
 Python | GitHub API | SQL Alchemy | Discord.py | Discord API
 
 ## Wiki Links
+
 - [Database Schema](https://github.com/renahime/RenaChan.py/wiki/Database-Schema)
 - [generate_glossary.py](https://github.com/renahime/RenaChan.py/wiki/generate_glossary.py)
 
@@ -123,10 +125,19 @@ To set up RenaBot for your Discord server, follow these steps:
 2. **Greeting Response**
    - When you use the preferred command prefix, RenaBot will respond with a friendly greeting ("hello" in this version).
 
+### Current Known Issues and Errors
+
+1. **Database Deletion on Restart**
+
+   - There is a known issue where the database (`dev.db`) will be deleted upon restarting RenaBot. This happens when the `CONFIG_VERSION` environment variable does not match the one stored in the `renachan` package. As a result, RenaBot will run the setup process again, which includes dropping and recreating the database tables. This will lead to the loss of existing data in the database.
+
+Please note that RenaBot is a work in progress (WIP), and these issues will be addressed in future versions. If you encounter any other errors or have suggestions for improvements, please feel free to report them or contribute to the project. Your feedback is valuable in making RenaBot better! Happy botting! 😊
+
 ## Future Implementations
 
 The following features are planned for future versions of RenaBot:
 
+- Database retainment so that the database doesn't delete upon closing the application.
 - Database migration support for updating the database structure without losing existing data.
 - Database Flexibility: The ability to choose between using a local database such as SQLite or a more robust database system like MySQL, depending on your needs and preferences.
 - A todo list feature that will remind users of upcoming tasks and keep track of task completion.

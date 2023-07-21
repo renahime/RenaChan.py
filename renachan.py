@@ -1,3 +1,10 @@
+## renachan.py
+### This script is the core of the RenaChan.py Discord bot.
+### It sets up the necessary imports, environment variables, and logging.
+### It fetches the latest version information from the GitHub repository, initializes the database, loads event handlers and command implementations.
+### Finally, it creates and runs the Discord bot with the specified configuration.
+### The bot is designed to respond to various events and user commands on Discord, providing functionality based on its configuration and the user's interactions.
+
 ### The bot script by setting up imports and the logging configuration. This ensures that necessary libraries and modules are available and sets up a basic logging system to track events
 ### in the bot's execution.
 import os

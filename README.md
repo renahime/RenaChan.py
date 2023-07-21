@@ -10,7 +10,6 @@ Here's the file structure of the RenaBot project:
 
 <details>
 <summary>Show File Structure</summary>
-     ```
 RenaBot/
 ├── RenaChan/
 │   ├── cogs
@@ -32,8 +31,7 @@ RenaBot/
 │   └── setup.py
 ├── renachan.py
 ├── .env
-├── file_structure.txt
-     ```
+└── file_structure.txt
 </details>
 
 ## Getting Started

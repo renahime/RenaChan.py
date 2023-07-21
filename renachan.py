@@ -86,24 +86,36 @@ bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
 
 
 ### The on_ready() function is an event in Discord.py that is triggered when the bot connects to Discord and is ready to start receiving events.
-### renachan.config.storage_type(): This function from the renachan package returns the type of storage used for the bot's data (e.g., SQLite, MySQL, etc.).
 ### If the storage type is "sqlite", the function initialize_database() from the renachan.managers.database module is called to initialize the database session for the bot.
 ### renachan.events and renachan.cogs.cmds: These are modules within the renachan package that contain event handling and command implementations, respectively. The bot initializes these modules to handle events and commands.
 ### bot.change_presence(): This sets the bot's presence on Discord, such as its status and activity (playing a game, streaming, etc.).
 
+
+# The on_ready() function is called when the bot is ready to start receiving events from Discord.
 @bot.event
 async def on_ready():
+    # Initialize the database if the storage type is "sqlite"
+    ### renachan.config.storage_type(): This function from the renachan package returns the type of storage used for the bot's data (e.g., SQLite, MySQL, etc.).
     if renachan.config.storage_type() == "sqlite":
-        bot.db = initialize_database()  # Initialize the session
+        # The session object that SQLAlchemy returns gets assigned to the bot so that we don't need to pass it over to our package/modules
+        bot.db = initialize_database()
 
-    # load cogs
+    ### Load event handling and command implementations
+    ### The event module contains event handlers that when defined the discord bot will trigger anytime there is an event that needs to be preformed.
+    ### eg. The bot joining a server, someone leaving the server... ext
     renachan.events.__init__(bot)
+    ### The cmds module is responsible for holding all the commands the discord bot knows
+    ### so when a user in a server uses the prefix and correct command the bot will recognize it and perform an action
     renachan.cogs.cmds.__init__(bot)
-    logging.info(f'{bot.command_prefix} is the command prefix')
+    ## This step is crucial for the bot to properly listen for and respond to various Discord events and execute custom commands based on user inputs.
 
-    logging.info(f"Database is set and RenaChan is on and ready to be of service :3")
+    # Set the bot's status on Discord
     await bot.change_presence(status=discord.Status.online,
-                              activity=discord.Game(renachan.config.bot_status()))  # Update Bot status
+                              activity=discord.Game(renachan.config.bot_status()))
+
+    logging.info(f"{bot.command_prefix} is the command prefix")
+    logging.info("Database is set, and RenaChan is on and ready to be of service :3")
+
 
 ### This part is the entry point of the script, where the bot execution begins.
 ### The condition if __name__ == "__main__": ensures that this block is only executed when the script is run as the main program, not when it is imported as a module.
@@ -113,12 +125,16 @@ async def on_ready():
 
 if __name__ == "__main__":
     try:
+        # Check if CONFIG_VERSION matches the one stored in the package
         if os.getenv('CONFIG_VERSION') != renachan.config_version():
+            # Check if .env file exists
             if os.path.isfile('.env'):
                 logging.error("Missing environment variables. Please backup and delete .env, then run renachan.py again.")
                 quit(2)
-            logging.warning("Unable to find required environment variables. Running setup.py...")  # if .env not found
+
+            logging.warning("Unable to find required environment variables. Running setup.py...")
             renachan.setup.__init__()  # run setup.py
+
         logging.info("Initializing bot...")
         bot.run(renachan.config.bot_token())
     except Exception as e:

@@ -10,27 +10,29 @@ Here's the file structure of the RenaBot project:
 
 ```
 RenaBot/
-├── RenaChan/
-│ ├── cogs
-│ │ ├── **init**.py
-│ │ ├── cmds.py
-│ │ └── tasks.py
-│ ├── managers/
-│ │ ├── database.py
-│ │ └── models.py
-│ ├── tools/
-│ │ ├── **init**.py
-│ │ └── session.py
-│ ├── **init**.py
-│ ├── session.py
-│ ├── config.py
-│ ├── dev.db
-│ ├── events.py
-│ ├── messages.py
-│ └── setup.py
-├── renachan.py
-├── .env
-└── file_structure.txt
+│-- RenaChan/
+│   │-- cogs
+│   	│-- __init__.py
+│   	│-- cmds.py
+│   	│-- tasks.py
+│   │-- managers/
+│   	│-- database.py
+│   	│-- models.py
+│   │-- tools/
+│   	│-- __init__.py
+│   	│-- session.py
+│   │-- __init__.py
+│   │-- session.py
+│   │-- config.py
+│   │-- dev.db
+│   │-- events.py
+│   │-- messages.py
+│   │-- setup.py
+│-- renachan.py
+│-- .env
+│-- file_structure.txt
+│-- README.md
+│-- generate_glossary.py
 ```
 
 ## Activating Virtual Environment

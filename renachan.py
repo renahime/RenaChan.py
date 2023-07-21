@@ -22,17 +22,50 @@ from os.path import join, dirname
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logging.info("Running RenaChan.py v0.1")
 
+### The sys.path list contains strings that represent directory paths. When you attempt to import a module,
+### Python searches for that module in each directory listed in sys.path in the order they appear in the list.
+### You can view more about sys.path here https://docs.python.org/3/library/sys.html#sys.path
+
 # Add the parent directory to sys.path
+
+##  __file__
+### In Python, __file__ is a built-in variable that represents the path of the current Python script (module) being executed.
+### It contains the absolute or relative path to the script file.
+
+##  os.path.abspath(__file__)
+### The os.path.abspath() function takes a file path as input and returns the absolute version of that path.
+### If the original path is already absolute, it is returned unchanged.
+### If it is a relative path, the function converts it to an absolute path based on the current working directory.
+
+##  os.path.dirname(os.path.abspath(__file__))
+### The os.path.dirname() function extracts the directory part of a given file path. It takes a file path as input and returns the directory path containing the file.
+
+### This gives you the absolute path to the directory containing the current Python script. This is useful for various
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# print(sys.path) ## [list of directories]
+# print(os.path.dirname(os.path.abspath(__file__))) ## /home/rena/appacademy/Projects/RenaBot
+
+
+## join(dirname(__file__), '.env')
+### The join() function from the os.path module combines the directory path obtained in step 3 with the filename '.env' to form the absolute path to the .env file.
+### This is done to ensure that the .env file is located in the same directory as the script.
+
+##  load_dotenv(join(dirname(__file__), '.env'))
+### load_dotenv() function from the dotenv library loads the environment variables from the specified .env file (the one obtained in step 4) into the runtime environment of the script.
+### This allows the script to access and use environment variables defined in the .env file during its execution.
 load_dotenv(join(dirname(__file__), '.env'))
 
 from renachan import renachan  # Import renachan package
 from renachan.managers.database import initialize_database
 
-### renachan: A package is a way to organize Python modules in a directory. It is a collection of Python modules and may contain a __init__.py file (not to be confused with the .env file).
+## renachan:
+### A package is a way to organize Python modules in a directory. It is a collection of Python modules and may contain a __init__.py file (not to be confused with the .env file).
 ### The package here contains the main functionality of the bot, and the renachan module inside this package is imported for use in the script.
+### A module is a file containing Python definitions and statements
 
-### renachan.managers.database: This is a module within the renachan package responsible for managing the bot's database.
+## renachan.managers.database:
+### This is a module within the renachan package responsible for managing the bot's database.
 ### The initialize_database() function from this module will be used later to initialize the database.
 
 ### This part of the script makes an API request to the GitHub repository to get the latest version tag of RenaChan.py.

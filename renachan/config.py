@@ -32,14 +32,14 @@ def db_host():
     return os.getenv['DB_HOST']
 
 def storage_type():
-    return os.getenv['STORAGE_TYPE']
+    return os.environ['STORAGE_TYPE']
 
 
 def db_port():
     return os.getenv('DB_PORT', "5000")
 
 def db_schema():
-    return os.getenv['DB_SCHEMA']
+    return os.environ['DB_SCHEMA']
 
 def db_user():
-    return os.getenv['DB_USER']
+    return os.environ['DB_USER']

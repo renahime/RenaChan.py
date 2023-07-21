@@ -9,7 +9,6 @@ from .config import *
 from .events import *
 from .messages import *
 from .setup import *
-from .managers import *
 
 
 def version():

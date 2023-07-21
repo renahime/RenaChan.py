@@ -1,4 +1,5 @@
 import time
+import logging
 
 import renachan
 def __init__():
@@ -15,7 +16,7 @@ def __init__():
     if input_storage_type.lower() == "y" or input_storage_type.lower() == "yes":
         input_storage_type = "sqlite"
     else:
-        print("ERROR: Sorry this bot only works on local databases, stay updated on this feature by following me on Twitter @renadotdev :)")
+        logging.error("ERROR: Sorry this bot only works on local databases, stay updated on this feature by following me on Twitter @renadotdev :)")
         return
 
     try:
@@ -29,11 +30,12 @@ DB_HOST={input_local_host}
 DB_PORT={input_local_port}
 DB_SCHEMA={input_db_schema}
 DB_USER={input_user}
+DATABASE_URL={database_url}
 """
         open('./.env', 'w').write(config)
-        print("\n[*] Successfully created .env file!")
-        print("rena_chan.py setup complete! Starting bot in 5 seconds...")
+        logging.info("\n[*] Successfully created .env file!")
+        logging.info("rena_chan.py setup complete! Starting bot in 5 seconds...")
         time.sleep(5)
     except Exception as e:
-        print("\n[!] An error occurred when creating config file.\n" + str(e))
+        logging.info("\n[!] An error occurred when creating config file.\n" + str(e))
         quit()

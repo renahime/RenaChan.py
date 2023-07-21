@@ -3,21 +3,39 @@ from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, Dat
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-from .database import Base
 
 Base = declarative_base()
 
-class Server(Base):
-      __tablename__ = 'servers'
-      id = Column(Integer, primary_key=True)
-      owner_id = Column(Integer, ForeignKey("owners.id"))
-      server_name = Column(String)
+# Define the association table for the many-to-many relationship
+member_server_association = Table('member_server_association', Base.metadata,
+    Column('member_id', Integer, ForeignKey('members.id')),
+    Column('server_id', Integer, ForeignKey('servers.id'))
+)
 
-      session = relationship('Session', back_populates='server')
-      to_do = relationship('ToDo', back_populates='server')
-      finder = relationship('Finder', back_populates='server')
-      channels = relationship('Channel', back_populates='server')
-      owner = relationship('Owner', back_populates='servers')
+class Server(Base):
+    __tablename__ = 'servers'
+    id = Column(Integer, primary_key=True)
+    owner_id = Column(Integer, ForeignKey("owners.id"))
+    server_name = Column(String)
+
+    # One Server can have many Channels
+    channels = relationship('Channel', back_populates='server')
+
+    # One Server can have many Members
+    members = relationship('Member', secondary=member_server_association, back_populates='servers')
+
+    # One Server can have one Owner
+    owner = relationship('Owner', back_populates='server')
+
+    # One Server can have many Finders
+    finders = relationship('Finder', back_populates='server')
+
+    # One Server can have many ToDos
+    to_dos = relationship('ToDo', back_populates='server')
+
+    # One Server can have many Sessions
+    sessions = relationship('Session', back_populates='server')
+
 
 class Owner(Base):
       __tablename__ = 'owners'
@@ -25,7 +43,8 @@ class Owner(Base):
       username = Column(Integer)
       user_discriminator = Column(Integer)
 
-      servers = relationship('Server', back_populates='owner')
+      # One Owner can have one Server
+      server = relationship('Server', back_populates='owner')
 
       def to_dict(self):
           return {
@@ -40,31 +59,40 @@ class Member(Base):
     username = Column(Integer)
     user_discriminator = Column(String)
 
+    # One Member can have one ToDo
+    todo = relationship('ToDo', back_populates='member')
+
+    # One Member can belong to many Servers through the association table
+    servers = relationship('Server', secondary=member_server_association, back_populates='members')
+
+    # One Member can have one Session
     session = relationship('Session', back_populates='member')
-    to_do = relationship('ToDo', back_populates='member')
+
+    # One Member can have one Finder
     finder = relationship('Finder', back_populates='member')
-    server = relationship('Server', back_populates='member')
 
     def to_dict(self):
-          return {
-              'user_id': self.id,
-              'user_name': self.username,
-              'user_discriminator': self.user_discriminator
-              }
+        return {
+            'user_id': self.id,
+            'user_name': self.username,
+            'user_discriminator': self.user_discriminator
+        }
+
 
 class Channel(Base):
-      __tablename__ = 'channels'
-      id = Column(Integer, primary_key=True)
-      server_id = Column(Integer, ForeignKey('servers.id'))
-      channel_name = Column(String)
+    __tablename__ = 'channels'
+    id = Column(Integer, primary_key=True)
+    server_id = Column(Integer, ForeignKey('servers.id'))
+    channel_name = Column(String)
 
-      server = relationship('Server', back_populates='channels')
+    # One Channel can have One Server
+    server = relationship('Server', back_populates='channels')
 
-      def to_dict(self):
-          return {
-              'channel_id': self.channel_id,
-              'channel_name': self.channel_name,
-              }
+    def to_dict(self):
+            return {
+                'channel_id': self.id,
+                'channel_name': self.channel_name,
+                }
 
 i_like = Table(
     "i_like", Base.metadata,
@@ -132,8 +160,11 @@ class Finder(Base):
       chosen_url = Column(String)
       last_time = Column(DateTime, nullable=False, default=datetime.utcnow)
 
+      # One Finder can have One Member
       member = relationship('Member', back_populates='finder')
-      server = relationship('Server', back_populates='finder')
+
+      # One Finder can have One Server
+      server = relationship('Server', back_populates='finders')
 
       def to_dict(self):
           return {
@@ -153,8 +184,12 @@ class Session(Base):
     date = Column(DateTime, nullable=False, default=datetime.utcnow)
     duration = Column(Integer)
 
+    # One Session can have One Member
     member = relationship('Member', back_populates='session')
-    server = relationship('Server', back_populates='session')
+
+    # One Session can have One Server
+    server = relationship('Server', back_populates='sessions')
+
 
     def to_dict(self):
         return {
@@ -174,8 +209,12 @@ class ToDo(Base):
       date = Column(DateTime, nullable=False, default=datetime.utcnow)
       duration = Column(DateTime)
 
-      member = relationship('Member', back_populates='to_do')
-      server = relationship('Server', back_populates='to_do')
+      # One ToDo can have One Member
+      member = relationship('Member', back_populates='todo')
+
+      # One ToDo can have One Server
+      server = relationship('Server', back_populates='to_dos')
+
       def to_dict(self):
           return {
               'session_id': self.todo_id,

@@ -18,7 +18,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(join(dirname(__file__), '.env'))
 
 from renachan import renachan  # Import renachan package
-from .renachan.managers.database import initialize_database
+from renachan.managers.database import initialize_database
 
 req = requests.get(f'https://api.github.com/repos/renahime/RenaChan.py/tags')
 response = json.loads(req.text)

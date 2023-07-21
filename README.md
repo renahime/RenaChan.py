@@ -7,32 +7,28 @@ RenaBot is a customizable Discord bot created to help users set up their own bot
 ## File Structure
 
 Here's the file structure of the RenaBot project:
-
-<details>
-<summary>Show File Structure</summary>
 RenaBot/
 ├── RenaChan/
-│   ├── cogs
-│   │   ├── __init__.py
-│   │   ├── cmds.py
-│   │   └── tasks.py
-│   ├── managers/
-│   │   ├── database.py
-│   │   └── models.py
-│   ├── tools/
-│   │   ├── __init__.py
-│   │   └── session.py
-│   ├── __init__.py
-│   ├── session.py
-│   ├── config.py
-│   ├── dev.db
-│   ├── events.py
-│   ├── messages.py
-│   └── setup.py
+│ ├── cogs
+│ │ ├── **init**.py
+│ │ ├── cmds.py
+│ │ └── tasks.py
+│ ├── managers/
+│ │ ├── database.py
+│ │ └── models.py
+│ ├── tools/
+│ │ ├── **init**.py
+│ │ └── session.py
+│ ├── **init**.py
+│ ├── session.py
+│ ├── config.py
+│ ├── dev.db
+│ ├── events.py
+│ ├── messages.py
+│ └── setup.py
 ├── renachan.py
 ├── .env
 └── file_structure.txt
-</details>
 
 ## Getting Started
 

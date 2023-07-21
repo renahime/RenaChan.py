@@ -65,19 +65,26 @@ To set up RenaBot for your Discord server, follow these steps:
    - To obtain your user ID, enable Developer Mode in Discord's settings (User Settings > Advanced > Developer Mode).
    - Right-click on your username or nickname, and select "Copy ID" from the context menu. This will copy your user ID to the clipboard.
 
-2. **Installing Dependencies**
+2. **Installing RenaChan.py**
 
-   - Ensure you have Python 3.9 or later installed on your system.
-   - It's recommended to set up a virtual environment for RenaBot to keep dependencies isolated. To create a virtual environment, navigate to the RenaBot directory and run:
+   - First, clone the RenaBot repository to your local machine:
      ```
-     python -m venv venv
+      git clone https://github.com/renahime/RenaBot.git
+      cd RenaBot
      ```
-   - Activate the virtual environment based on your operating system:
 
-     - On Windows: `venv\Scripts\activate`
-     - On macOS/Linux: `source venv/bin/activate`
+3. **Installing Dependencies in Virtual Environment**
 
-3. **Starting Virtual Enviorment**
+   - Ensure you have Python 3.9 or later installed on your system. If you don't have pipenv installed, you can install it using pip:
+     ```
+      pip install pipenv
+     ```
+   - Ensure you have Python 3.9 or later installed on your system. If you don't have pipenv installed, you can install it using pip:
+     ```
+      pipenv install requirements.txt
+     ```
+
+4. **Starting Virtual Enviorment**
 
    - Ensure you have Python 3.9 or later installed on your system.
    - Navigate to the RenaBot directory and install the required Python packages by running the following command:
@@ -85,7 +92,7 @@ To set up RenaBot for your Discord server, follow these steps:
      pipenv shell
      ```
 
-4. **Starting RenaBot**
+5. **Starting RenaBot**
    - Run the `renachan.py` script to start RenaBot:
      ```
      python renachan.py

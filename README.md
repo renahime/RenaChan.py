@@ -33,10 +33,6 @@ RenaBot/
 └── file_structure.txt
 ```
 
-## Getting Started
-
-To set up RenaBot for your Discord server, follow these steps:
-
 ## Activating Virtual Environment
 
 To ensure a clean and isolated environment for RenaBot's dependencies, it's recommended to set up a virtual environment. Below are the steps to create and activate a virtual environment on different operating systems:
@@ -56,6 +52,10 @@ To ensure a clean and isolated environment for RenaBot's dependencies, it's reco
 - [Creating a Virtual Environment (venv) - Python Docs](https://docs.python.org/3/library/venv.html): Official documentation on creating virtual environments using `venv`.
 
 Once the virtual environment is activated, you can install RenaBot's required dependencies without affecting other projects or your system-wide Python installation. Remember to activate the virtual environment whenever you work on RenaBot to ensure consistency and avoid potential conflicts.
+
+## Getting Started
+
+To set up RenaBot for your Discord server, follow these steps:
 
 1. **Obtaining the Bot Token and User ID**
 

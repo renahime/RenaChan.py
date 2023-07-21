@@ -34,7 +34,7 @@ RenaBot/
 ```
 
 ## Technology Used
-Python | GitHub API | SQL Alchemy | Discord.py |
+Python | GitHub API | SQL Alchemy | Discord.py | Discord API
 
 ## Wiki Links
 - [Database Schema](https://github.com/renahime/RenaChan.py/wiki/Database-Schema)

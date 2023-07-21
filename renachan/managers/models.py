@@ -1,8 +1,11 @@
 import os
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from .database import Base
+
+Base = declarative_base()
 
 class Server(Base):
       __tablename__ = 'servers'

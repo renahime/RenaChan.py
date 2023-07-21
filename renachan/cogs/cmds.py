@@ -7,7 +7,7 @@ import renachan
 
 MAX_SESSION_TIME_MINUTES = 30
 
-def __init__(bot, db):
+def __init__(bot):
     """ Initialize commands """
     hello(bot)
     # add(bot)

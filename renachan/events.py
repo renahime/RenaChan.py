@@ -3,12 +3,12 @@ import renachan
 import discord
 
 
-def __init__(bot, db):
+def __init__(bot):
     """ Initialize events """
-    on_guild_join(bot, db)
+    on_guild_join(bot)
     # on_command_error(bot)
 
-def on_guild_join(bot, db):
+def on_guild_join(bot):
     @bot.event
     async def on_guild_join(guild):
         if renachan.config.storage_type() == "sqlite":

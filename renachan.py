@@ -9,18 +9,16 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from os.path import join, dirname
 
-from renachan import renachan
-from managers.database import get_database
-
-
 # Set up the logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logging.info("Running RenaChan.py v0.1")
 
-db = None  # Define db as a global variable
-
-# Add the parent directory of `managers` to sys.path
+# Add the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(join(dirname(__file__), '.env'))
+
+from renachan import renachan  # Import renachan package
+from .renachan.managers.database import initialize_database
 
 req = requests.get(f'https://api.github.com/repos/renahime/RenaChan.py/tags')
 response = json.loads(req.text)
@@ -63,33 +61,27 @@ bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
 
 @bot.event
 async def on_ready():
-    global db  # Reference the global db variable
-    logging.info(f"RenaChan is on and ready to be of service :3")
+    if renachan.config.storage_type() == "sqlite":
+        bot.db = initialize_database()  # Initialize the session
+
     # load cogs
+    renachan.events.__init__(bot)
+    renachan.cogs.cmds.__init__(bot)
     logging.info(f'{bot.command_prefix} is the command prefix')
 
-    load_dotenv(join(dirname(__file__), '.env'))
-
-    if renachan.config.storage_type() == "sqlite":
-        db = get_database()  # Initialize the session
-
+    logging.info(f"Database is set and RenaChan is on and ready to be of service :3")
     await bot.change_presence(status=discord.Status.online,
                               activity=discord.Game(renachan.config.bot_status()))  # Update Bot status
 
 if __name__ == "__main__":
     try:
-        load_dotenv(join(dirname(__file__), '.env'))
         if os.getenv('CONFIG_VERSION') != renachan.config_version():
             if os.path.isfile('.env'):
                 logging.error("Missing environment variables. Please backup and delete .env, then run renachan.py again.")
                 quit(2)
             logging.warning("Unable to find required environment variables. Running setup.py...")  # if .env not found
             renachan.setup.__init__()  # run setup.py
-
         logging.info("Initializing bot...")
-        if renachan.config.storage_type() == "sqlite":
-            db = get_database()  # Initialize the session
-
         bot.run(renachan.config.bot_token())
     except Exception as e:
         logging.error(f"[/!\\] Error: Failed to run bot!\n{e}")

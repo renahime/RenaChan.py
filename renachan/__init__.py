@@ -4,12 +4,12 @@ import socket
 import sys
 
 from .cogs import *
-from .managers import *
 from .tools import *
 from .config import *
 from .events import *
 from .messages import *
 from .setup import *
+from .managers import *
 
 
 def version():

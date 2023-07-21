@@ -1,0 +1,8 @@
+RenaBot/
+│-- RenaChan/
+│   │-- managers/
+│   	│-- __init__.py
+│   	│-- database.py
+│   	│-- models.py
+│   │-- dev.db
+│-- renachan.py

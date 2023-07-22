@@ -159,7 +159,8 @@ async def on_ready():
 
 ### This part is the entry point of the script, where the bot execution begins.
 ### The condition if __name__ == "__main__": ensures that this block is only executed when the script is run as the main program, not when it is imported as a module.
-### The block checks if the current CONFIG_VERSION environment variable matches the one stored in the renachan package (renachan.config_version()). If not, it checks if the .env file exists. If it does, it means that the required environment variables are missing, and it logs an error message instructing the user to run renachan.py again after setting up the environment variables using setup.py.
+### The block checks if the current CONFIG_VERSION environment variable matches the one stored in the renachan package (renachan.config_version()).
+### If not, it checks if the .env file exists. If it does, it means that the required environment variables are missing, and it logs an error message instructing the user to run renachan.py again after setting up the environment variables using setup.py.
 ### If the .env file doesn't exist, it means the setup needs to be performed. The script initializes the setup process using renachan.setup.__init__().
 ### If everything is set up correctly, the bot is initialized with bot.run(renachan.config.bot_token()).
 

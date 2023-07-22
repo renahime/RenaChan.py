@@ -9,6 +9,26 @@ def __init__(bot):
     on_guild_join(bot)
 
 def on_guild_join(bot):
+    """
+    Event handler for when the bot joins a new guild (server).
+
+    Parameters:
+        bot (discord.ext.commands.Bot): The instance of the Discord bot.
+
+    This function defines the behavior of the bot when it joins a new guild (server). It handles tasks such as sending a welcome message
+    to the 'general' channel (if available) or the first available text channel in the server. It also collects and stores information
+    about the server, its owner, members, and channels in the SQLite database (if applicable).
+
+    Note:
+        - The 'on_guild_join' event is automatically triggered by Discord when the bot joins a new server.
+        - The function uses the renachan.config.storage_type() function to check if the bot is using SQLite as its storage type.
+        - The function accesses information about the new guild, such as its ID, name, owner ID, and owner username, to store them in the database.
+        - It creates instances of the renachan.models.Owner and renachan.models.Server classes to represent the owner and server, respectively.
+        - For each member in the guild, the function creates an instance of the renachan.models.Member class to represent the member and their associated servers.
+        - For each channel in the guild, the function creates an instance of the renachan.models.Channel class to represent the channel and its associated server.
+        - The function uses bot.db to interact with the SQLite database. The data is committed and the session is closed after adding the information.
+        - If the 'general' channel exists in the server, the bot sends a welcome message to it. Otherwise, it sends the message to the first available text channel.
+    """
     @bot.event
     async def on_guild_join(guild):
         if renachan.config.storage_type() == "sqlite":

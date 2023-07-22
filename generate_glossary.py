@@ -77,12 +77,44 @@ def extract_function_docs(file_path: str) -> list:
     return docs  # Return the list of (function_name, documentation) pairs.
 
 
+def extract_function_comments(file_path: str) -> dict:
+    """
+    Extracts function comments from the given file.
+
+    Args:
+        file_path (str): The path of the file to extract function comments from.
+
+    Returns:
+        dict: A dictionary containing function names as keys and their associated comments as values.
+    """
+    function_comments = {}  # Create an empty dictionary to store function comments.
+
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+        for index, line in enumerate(lines):
+            stripped_line = line.strip()
+
+            if stripped_line.startswith("def "):
+                func_name_match = re.match(r'def\s+([\w_]+)\s*\(', stripped_line)
+                if func_name_match:
+                    func_name = func_name_match.group(1)
+                    comment = ""
+                    # Check if the previous line is a comment
+                    if index - 1 >= 0 and lines[index - 1].strip().startswith("#"):
+                        comment = lines[index - 1].strip("#").strip()
+                    function_comments[func_name] = comment
+
+    return function_comments
+
+
+
 ### extract_function_docs(file_path:str) -> None
 ### This Function function takes a Python file's path, extracts its comments and function documentation using the respective helper functions, and then displays the content of the file,
 ### logic comments, and function documentation in the terminal. This function is useful for quickly reviewing and documenting the key aspects of a Python script.
 def generate_glossary(file_path: str) -> None:
     """
-    Generates a glossary for a given Python file, displaying its content, comments, and function documentation.
+    Generates a glossary for a given Python file, displaying its code with function comments.
 
     Args:
         file_path (str): The path of the Python file to generate the glossary for.
@@ -90,27 +122,35 @@ def generate_glossary(file_path: str) -> None:
     # Extract comments from the given file using the 'extract_comments' function
     comments = extract_comments(file_path)
 
-    # Extract function documentation from the given file using the 'extract_function_docs' function
-    function_docs = extract_function_docs(file_path)
+    # Create horizontal line
+    horizontal_line = "=" * 80
 
-    # Display the file's logic comments in the terminal
+    # Display the file path with box border
+    print(horizontal_line)
+    file_title = f" File: {os.path.basename(file_path)} "
+    print(f"|{file_title.center(78)}|")
+    print(horizontal_line)
+
+    # Display the code with function comments
     with open(file_path, 'r') as file:
         content = file.read()
-        logging.info("== File Contents ==\n")
+
+        # Function comments with box border
+        if comments:
+            print(horizontal_line)
+            print("|" + " Function Comments ".center(78) + "|")
+            print(horizontal_line)
+            for comment in comments:
+                print("| " + comment.ljust(76) + "|")
+            print(horizontal_line)
+
+        # Code with box border
+        print(horizontal_line)
+        print("|" + " Code ".center(78) + "|")
+        print(horizontal_line)
         print(content)
+        print(horizontal_line)
 
-    # Display the logic comments extracted from the file
-    if comments:
-        logging.info("\n== Logic Comments ==\n")
-        for comment in comments:
-            print(f"- {comment}")
-
-    # Display function documentation extracted from the file
-    if function_docs:
-        logging.info("\n== Function Documentation ==\n")
-        for func_name, doc_string in function_docs:
-            logging.info(f"=== {func_name} ===\n")
-            print(doc_string)
 
 
 
@@ -154,5 +194,4 @@ if __name__ == "__main__":
     else:
         logging.info("File found! Generating glossary...")
         for file_path in matching_files:
-            print(f"\n== Glossary for File: {file_path} ==\n")
             generate_glossary(file_path)

@@ -134,6 +134,19 @@ bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
 # The on_ready() function is called when the bot is ready to start receiving events from Discord.
 @bot.event
 async def on_ready():
+    """
+    Event handler for when the bot connects to Discord and becomes ready.
+
+    This function is automatically called by the Discord API when the bot successfully connects to Discord and is ready to start processing events.
+    It is triggered only once when the bot is ready to begin handling interactions with the Discord servers.
+
+    Note:
+        - The event module contains event handlers that define how the discord bot will respond to various events, such as joining or leaving servers.
+          The `renachan.events.__init__(bot)` call initializes these event handlers, allowing the bot to listen for and handle specific events.
+        - The cmds module holds all the custom commands that the discord bot knows. The `renachan.cogs.cmds.__init__(bot)` call initializes these commands,
+          enabling the bot to recognize user commands and perform corresponding actions based on the inputs.
+    """
+
     # Initialize the database if the storage type is "sqlite"
     ### renachan.config.storage_type(): This function from the renachan package returns the type of storage used for the bot's data (e.g., SQLite, MySQL, etc.).
     if renachan.config.storage_type() == "sqlite":

@@ -7,12 +7,43 @@ from renachan.managers.models import Base, Server, Owner, Member, Channel, i_lik
 
 
 def initialize_database():
+    """
+    Initialize the SQLite database for the bot.
+
+    Returns:
+        session (sqlalchemy.orm.Session): A session object that can be used to interact with the database.
+
+    This function sets up and initializes the SQLite database for the bot. It performs the following steps:
+    1. Constructs the path to the 'dev.db' file inside the 'renachan' directory.
+    2. Creates a new SQLAlchemy engine connected to the 'dev.db' file.
+    3. Creates a session factory using the engine, allowing the bot to create new session instances for database operations.
+    4. Initializes a session instance, which effectively opens a connection to the database (if the file exists) or creates a new database file if it doesn't exist.
+    5. Uses reflection to gather schema information from the database engine and populate the metadata object with Table objects representing each table in the database.
+    6. Checks if all the expected tables exist in the database. If they do, the function returns the existing session object.
+    7. If any expected tables are missing or the database file doesn't exist, the function creates the necessary tables using the metadata associated with the model classes.
+    8. Logs the initialization status and returns the new session object connected to the database.
+
+    Note:
+        - The function expects the SQLAlchemy model classes (Base, Server, Owner, etc.) to be defined and imported from 'renachan.managers.models'.
+        - The function relies on the 'os' module to handle file path operations and the 'logging' module to log messages.
+        - The 'create_engine' function is used to create a new SQLAlchemy engine connected to the 'dev.db' file using a SQLite dialect.
+        - The 'sessionmaker' is a factory class provided by SQLAlchemy to generate new session objects bound to the database engine.
+        - The 'metadata.reflect()' method is used for reflection, dynamically gathering schema information from the database.
+        - The 'Base.metadata.create_all(engine)' method creates necessary database tables based on model definitions if missing.
+    """
+
     # Get the base directory path of the current file (database.py)
+
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
     # Construct the path to the dev.db file inside the renachan directory
+
+
     db_file = "dev.db"
     db_path = os.path.join(base_dir, db_file)
+
 
     # Create a session to return to the bot
     # SQLAlchemy
@@ -25,6 +56,8 @@ def initialize_database():
     ## "/{db_path}" - The {db_path} is a placeholder representing the path to the SQLite database file. It is provided using Python's string formatting with an "f-string" (formatted string literal) where the f prefix allows you to include expressions inside curly braces {}.
 
     ### So, when create_engine() is called with the formatted URL, it creates an engine connected to the dev.db file, allowing you to interact with the SQLite database through SQLAlchemy's API.
+
+
     engine = create_engine(f"sqlite:///{db_path}")
 
 
@@ -42,7 +75,10 @@ def initialize_database():
     ## It is used to generate new session objects that will be bound to a specific database engine (engine).
     ## When you call sessionmaker(bind=engine), you are creating a session factory that knows how to create sessions associated with the specified database engine.
     ## Since this is coming from a factory class this is not exactly making the instance of the class but rather creating the class itself.
+
+
     Session = sessionmaker(bind=engine)
+
 
     # Session()
     ## This line creates a new session instance using the Session class we defined earlier.
@@ -50,7 +86,10 @@ def initialize_database():
     ## Since we have recieved the Session class from the line before we can now create an instance of the Session class here, which is what we will use to to work with the database.
     ## If the dev.db file already exists at the specified path, the engine will connect to it.
     ## If the file doesn't exist, SQLAlchemy will create it at that location. So, at this step, the dev.db file is created if it doesn't already exist.
+
+
     session = Session()
+
 
     try:
         # MetaData
@@ -61,7 +100,10 @@ def initialize_database():
         # MetaData(bind=engine)
         ## This creates a new MetaData instance and binds it to a specific database engine (engine).
         ## By binding MetaData to the engine, SQLAlchemy knows which database engine to use when it needs to retrieve the database schema information.
+
+
         metadata = MetaData(bind=engine)
+
 
         # metadata.reflect()
         ## When this function is called SQLAlchemy retrieves the schema information from the database engine (engine) to populate the metadata object with Table objects representing each table in the database.
@@ -71,9 +113,14 @@ def initialize_database():
         ## Reflection is particularly useful when you want to work with an existing database without having to manually define SQLAlchemy models for each table.
         ## By reflecting the schema, you can dynamically interact with the database using the metadata object and perform queries without writing explicit model definitions.
         ## The process of reflection gathers information from the database and populates the metadata object with Table objects, making it a valuable tool for dynamically interacting with the database without explicitly defining model classes.
+
+
         metadata.reflect()
 
+
         # List of table names that should be present in the database
+
+
         expected_tables = [
             'servers',
             'owners',
@@ -88,10 +135,14 @@ def initialize_database():
             'trackers'
         ]
 
+
         # Check if all expected tables exist in the database
+
         missing_tables = set(expected_tables) - set(metadata.tables.keys())
         if not missing_tables and os.path.exists(db_path):
+
             # All expected tables are present, no need to recreate them
+
             logging.info("Database found and ready to use")
             return session
         else:
@@ -111,9 +162,11 @@ def initialize_database():
 
             # Conclusion
             ## SQLAlchemy will use the metadata associated with your model classes (Base.metadata) to create the necessary tables in the SQLite database represented by the engine.
-            Base.metadata.create_all(engine)
+
+
+            Base.metadata.create_all(engine) # engine = dev.dv
             logging.info("Database is missing... creating tables as needed")
-            return session
+            return session # session = connection to the database
 
     except OperationalError as e:
         logging.error(f"Error while initializing the database: {e}")

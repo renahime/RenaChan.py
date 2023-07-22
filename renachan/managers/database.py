@@ -84,7 +84,8 @@ def initialize_database():
             'finders',
             'sessions',
             'to_dos',
-            'member_server_association'
+            'member_server_association',
+            'trackers'
         ]
 
         # Check if all expected tables exist in the database

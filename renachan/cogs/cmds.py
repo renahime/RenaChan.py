@@ -26,7 +26,7 @@ def __init__(bot):
     """
     # Initialize individual commands for the bot instance 'bot'
     hello(bot)   # Create the 'hello' command that sends a simple greeting message.
-    harass(bot)  # Create the 'harass' command that allows the bot to send continuous messages to a user.
+    setup_harass_command(bot)  # Create the 'harass' command that allows the bot to send continuous messages to a user.
 
 
 def hello(bot):
@@ -57,7 +57,7 @@ def hello(bot):
         await ctx.send("Haiiii")
 
 
-def harass(bot):
+def setup_harass_command(bot):
     """
     Create a 'harass' command for the bot.
 
@@ -74,40 +74,55 @@ def harass(bot):
 
     Note:
         - The bot must have the necessary permissions to send messages in the server and access to the "general" channel (if applicable).
-        - The 'harass' command utilizes the `send_message` function, which handles the message sending logic.
+        - The 'harass' command can only be used in a direct message (DM) with the bot.
 
     Example usage of the 'harass' command:
         !harass JohnDoe mysecretpassword Hello, this is a harassment message!
     """
     @bot.command()
-    async def harass(ctx, username: str, *, password: str, message: str):
+    @in_dm()  # Use the custom check decorator to ensure the command is coming from a DM
+    async def harass(ctx, *, input_list: str):
+        # Split the input_list into individual components
+        params = input_list.split()
+        if len(params) != 3:
+            await ctx.send("Invalid number of parameters. The command should be: !harass username password message")
+            return
+
+        # Extract individual components
+        username, password, message = params
+
         # Find the user in any of the bot's guilds (servers)
         user = None
         for guild in bot.guilds:
             user = discord.utils.get(guild.members, name=username)
             if user:
+                await ctx.send(f"Found {username}, I'm off to annoying them now...")
                 break
-
         if user:
             # Send the initial message to the user
-            await send_message(user, ctx.channel, message)
-
+            await send_message(bot, user, ctx.channel, message)
+            count = 1
+            logging.info(f"Harass message {count} has been sent")
             # Continuously send the message respecting the rate limit
             while True:
-                await asyncio.sleep(5)
-
-                # Check if the user has responded with the correct password
-                async for response in bot.wait_for('message', check=lambda m: m.author == user):
+                try:
+                    response = await bot.wait_for('message', timeout=5, check=lambda m: m.author == user)
+                except asyncio.TimeoutError:
+                    # If the wait times out, send the message again
+                    await send_message(bot, user, ctx.channel, message)
+                    count = count + 1
+                    logging.info(f"Harass message {count} has been sent")
+                else:
                     if response.content.strip() == password:
                         # Stop harassment if the user provided the correct password
-                        await ctx.send(f"Messages to {user.name} have been stopped.")
+                        await ctx.send(f"I have stopped annoying {username}")
+                        logging.info(f"{username} was harrassed {count} times")
                         return
-
-                # Send the message again
-                await send_message(user, ctx.channel, message)
         else:
             # If the user was not found in any server where the bot is a member
             await ctx.send(f"{username} was not found in any server where I am a member.")
+
+
 
 
 

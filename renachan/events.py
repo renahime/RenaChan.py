@@ -29,38 +29,77 @@ def on_guild_join(bot):
         - The function uses bot.db to interact with the SQLite database. The data is committed and the session is closed after adding the information.
         - If the 'general' channel exists in the server, the bot sends a welcome message to it. Otherwise, it sends the message to the first available text channel.
     """
+def on_guild_join(bot):
+    """
+    This function is called when the bot joins a new guild (server). It performs the following tasks:
+    1. Extracts guild information, such as server ID, owner ID, server name, and owner username.
+    2. Checks if the owner already exists in the database and adds it if not.
+    3. Adds the new server to the database.
+    4. Associates guild members with the server in the database, will include new members to the database if they are not there.
+    5. Finds the 'general' channel in the guild and sends a welcome message there or in the first text channel.
+
+    Parameters:
+        guild (discord.Guild): The Discord guild (server) that the bot has joined.
+
+    Notes:
+        - This function assumes that 'renachan.config' and 'renachan.models' have been imported and properly set up.
+        - The function relies on a database session named 'bot.db' to perform database operations.
+        - It is assumed that 'bot' is an instance of the bot (client) used to interact with Discord.
+
+    """
     @bot.event
     async def on_guild_join(guild):
         if renachan.config.storage_type() == "sqlite":
-            # Finding general text channel to send the welcome message
             server_id = guild.id
             owner_id = guild.owner_id
             server_name = guild.name
             owner_username = guild.owner.name
-            # Collecting Owner Info
-            owner = renachan.models.Owner(id=owner_id, username=owner_username)
-            # Collecting Server Info
-            server = renachan.models.Server(id=server_id, server_name=server_name, owner=owner)
+
+            # Check if the owner already exists in the database
+            existing_owner = bot.db.query(renachan.models.Owner).filter_by(id=owner_id).first()
+
+            # If the owner does not exist, add it to the database
+            if not existing_owner:
+                owner = renachan.models.Owner(id=owner_id, username=owner_username)
+                bot.db.add(owner)
+
+            # Add the new server to the database
+            server = renachan.models.Server(id=server_id, server_name=server_name, owner=existing_owner)
+            bot.db.add(server)
+
+            # Commit the changes to the database
+            bot.db.commit()
+
+            # Iterate through the guild members and associate them with the server
+            for member in guild.members:
+                member_id = member.id
+                member_username = member.name
+                member_discriminator = member.discriminator
+
+                # Check if the member already exists in the database
+                existing_member = bot.db.query(renachan.models.Member).filter_by(id=member_id).first()
+                if existing_member:
+                    # If the member exists, retrieve the member instance and add the server to its 'servers' relationship
+                    existing_member.servers.append(server)
+                else:
+                    # If the member does not exist, create a new member instance and add it to the database with the associated server
+                    new_member = renachan.models.Member(id=member_id, username=member_username, user_discriminator=member_discriminator)
+                    new_member.servers.append(server)
+                    bot.db.add(new_member)
+
             # Finding General Channel
             general_channel = next((channel for channel in guild.text_channels if channel.name == 'general'), None)
-            # Collecting Member Info
-            for member in guild.members:
-                member = renachan.models.Member(id=member.id, username=member.name, servers=[server])
-                bot.db.add(member)
 
-            # Collecting Channel
-            for channel in guild.channels:
-                channel_data = renachan.models.Channel(id=channel.id, channel_name=channel.name, server=server)
-                bot.db.add(channel_data)
-            # Ending db session
+            # Commit the changes to the database and close the session
             bot.db.commit()
             bot.db.close()
-            # If the 'general' channel is found then it will send it to the general channel.
+
+            # Send the welcome message if the 'general' channel is found
             if general_channel:
                 welcome_message = "Rena-Chan has arrived and is ready to serve! :3"
                 await general_channel.send(welcome_message)
             else:
-                # If 'general' channel doesn't exist send it to the first text channel in the guild:
+                # If 'general' channel doesn't exist, send it to the first text channel in the guild
                 first_text_channel = next((channel for channel in guild.text_channels), None)
                 if first_text_channel:
                     await first_text_channel.send(welcome_message)

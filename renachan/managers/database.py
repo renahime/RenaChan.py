@@ -6,7 +6,7 @@ from sqlalchemy.exc import OperationalError
 from renachan.managers.models import Base, Server, Owner, Member, Channel, i_like, i_might, Finder, Session, ToDo
 
 
-def initialize_database():
+def initialize_database(logger):
     """
     Initialize the SQLite database for the bot.
 
@@ -31,7 +31,6 @@ def initialize_database():
         - The 'metadata.reflect()' method is used for reflection, dynamically gathering schema information from the database.
         - The 'Base.metadata.create_all(engine)' method creates necessary database tables based on model definitions if missing.
     """
-
     # Get the base directory path of the current file (database.py)
 
 
@@ -143,7 +142,7 @@ def initialize_database():
 
             # All expected tables are present, no need to recreate them
 
-            logging.info("Database found and ready to use")
+            logger.info("Database found and ready to use")
             return session
         else:
             # Base
@@ -165,11 +164,11 @@ def initialize_database():
 
 
             Base.metadata.create_all(engine) # engine = dev.dv
-            logging.info("Database is missing... creating tables as needed")
+            logger.info("Database is missing... creating tables as needed")
             return session # session = connection to the database
 
     except OperationalError as e:
-        logging.error(f"Error while initializing the database: {e}")
+        logger.error(f"Error while initializing the database: {e}")
         return None
 
 

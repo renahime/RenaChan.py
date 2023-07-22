@@ -22,3 +22,4 @@ RenaBot/
 │-- file_structure.txt
 │-- README.md
 │-- generate_glossary.py
+│-- make_logger.py

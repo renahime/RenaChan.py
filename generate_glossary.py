@@ -27,15 +27,6 @@ def main():
         for file_path in matching_files:
             generate_glossary(file_path)
 
-
-if __name__ == "__main__":
-    # The condition `if __name__ == "__main__":` is used to determine if the script is being run directly or imported as a module.
-    # When a Python script is executed directly, the value of the special variable __name__ is set to "__main__".
-    # If the script is imported as a module into another script, the value of __name__ will be the name of the module instead.
-    # By using this condition, we can ensure that certain blocks of code (e.g., the main function) are executed only when the script is run directly.
-    # In this case, when the script is run directly, we execute the main function, which handles the glossary generation process.
-    main()
-
 def extract_comments(file_path: str) -> list:
     """
     Extracts comments from the given file.
@@ -284,11 +275,10 @@ def find_python_files(base_dir: str) -> list:
     return python_files  # Return the list of Python file paths.
 
 
-### if __name__ == "__main__" is a special Python construct that checks whether the script is being executed directly or if it is imported as a module into another script.
-### When a Python script is executed directly, the value of the __name__ variable is set to "__main__".
-### On the other hand, if the script is imported as a module, the value of __name__ will be the name of the module.
-
-### The main block checks if the script is being run directly or imported as a module.
-### If run directly, it prompts the user to enter a filename, finds all Python files in the project directory and its subdirectories,
-### and then generates a glossary for the file(s) with the matching name. The glossary includes the content of the file, logic comments,
-### and function documentation for each matching file. This allows users to quickly analyze and document Python files in their project.
+if __name__ == "__main__":
+    # The condition `if __name__ == "__main__":` is used to determine if the script is being run directly or imported as a module.
+    # When a Python script is executed directly, the value of the special variable __name__ is set to "__main__".
+    # If the script is imported as a module into another script, the value of __name__ will be the name of the module instead.
+    # By using this condition, we can ensure that certain blocks of code (e.g., the main function) are executed only when the script is run directly.
+    # In this case, when the script is run directly, we execute the main function, which handles the glossary generation process.
+    main()

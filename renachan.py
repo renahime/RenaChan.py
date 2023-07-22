@@ -12,6 +12,7 @@ import sys
 import requests
 import json
 import logging
+from make_logger import initialize_logger
 
 ### os, sys, requests, json, logging: These are standard Python libraries that provide various functionalities for handling operating system tasks, making HTTP requests,
 ### working with JSON data, and logging.
@@ -26,9 +27,7 @@ from os.path import join, dirname
 
 
 # Set up the logging configuration
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-logging.info("Running RenaChan.py v0.1")
-
+logger = initialize_logger()
 ### The sys.path list contains strings that represent directory paths. When you attempt to import a module,
 ### Python searches for that module in each directory listed in sys.path in the order they appear in the list.
 ### You can view more about sys.path here https://docs.python.org/3/library/sys.html#sys.path
@@ -101,14 +100,14 @@ def main():
         bot = setup_bot()
 
         # Logs a message indicating that the bot is initializing.
-        logging.info("Initializing bot...")
+        logger.info("Initializing bot...")
 
         # Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
         bot.run(renachan.config.bot_token())
 
     except Exception as e:
         # Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
-        logging.error(f"[/!\\] Error: Failed to run bot!\n{e}")
+        logger.error(f"[/!\\] Error: Failed to run bot!\n{e}")
 
         # Exits the script with status code 1 to indicate an error.
         exit(1)
@@ -124,7 +123,7 @@ def check_latest_version():
     Note:
         - The function uses the 'requests' library to make an HTTP GET request to the GitHub API.
         - It uses the 'json' library to parse the JSON response from the API.
-        - The function uses the 'logging' module to log messages based on the comparison results.
+        - The function uses the 'logger' module to log messages based on the comparison results.
 
     Raises:
         - It may raise an exception if there's an error while making the API request or processing the response.
@@ -138,7 +137,7 @@ def check_latest_version():
         # If the request was successful (status code 200), check if the latest version matches the current version of the bot
         if response[0]['name'] == renachan.version():
             # If the versions match, log that the user is running the latest version.
-            logging.info("You are currently running the latest version of RenaChan.py!\n")
+            logger.info("You are currently running the latest version of RenaChan.py!\n")
         else:
             # If the versions don't match, check if the current version is listed in the fetched versions.
             version_listed = False
@@ -146,27 +145,27 @@ def check_latest_version():
                 if x['name'] == renachan.version():
                     version_listed = True
                     # If the current version is listed, log that the user is not using the latest version.
-                    logging.info("You are not using our latest version! :(\n")
+                    logger.info("You are not using our latest version! :(\n")
             if not version_listed:
                 # If the current version is not listed, log that the user is using an unlisted version.
-                logging.info("You are currently using an unlisted version!\n")
+                logger.info("You are currently using an unlisted version!\n")
 
     elif req.status_code == 404:
         # If the request returns a 404 status code, log that the latest RenaChan.py version was not found.
-        logging.error("Latest RenaChan.py version not found!\n")
+        logger.error("Latest RenaChan.py version not found!\n")
     elif req.status_code == 500:
         # If the request returns a 500 status code, log that there was an internal server error while fetching the latest RenaChan.py version.
-        logging.error("An error occurred while fetching the latest RenaChan.py version. [500 Internal Server Error]\n")
+        logger.error("An error occurred while fetching the latest RenaChan.py version. [500 Internal Server Error]\n")
     elif req.status_code == 502:
         # If the request returns a 502 status code, log that there was a bad gateway error while fetching the latest RenaChan.py version.
-        logging.error("An error occurred while fetching the latest RenaChan.py version. [502 Bad Gateway]\n")
+        logger.error("An error occurred while fetching the latest RenaChan.py version. [502 Bad Gateway]\n")
     elif req.status_code == 503:
         # If the request returns a 503 status code, log that the service for fetching the latest RenaChan.py version is unavailable.
-        logging.error("An error occurred while fetching the latest RenaChan.py version. [503 Service Unavailable]\n")
+        logger.error("An error occurred while fetching the latest RenaChan.py version. [503 Service Unavailable]\n")
     else:
         # If the request returns an unknown status code, log that an unknown error occurred while fetching the latest RenaChan.py version and provide the status code.
-        logging.error("An unknown error has occurred when fetching the latest RenaChan.py version\n")
-        logging.error("HTML Error Code:" + str(req.status_code))
+        logger.error("An unknown error has occurred when fetching the latest RenaChan.py version\n")
+        logger.error("HTML Error Code:" + str(req.status_code))
 
 
 def setup_bot() -> discord.ext.commands.Bot:
@@ -214,7 +213,7 @@ def setup_bot() -> discord.ext.commands.Bot:
 
         # If the storage type is "sqlite", initializes the database session for the bot.
         if renachan.config.storage_type() == "sqlite":
-            bot.db = initialize_database()
+            bot.db = initialize_database(logger)
 
         # Initializes event handlers and command implementations from renachan.events and renachan.cogs.cmds modules.
         renachan.events.__init__(bot)
@@ -224,8 +223,8 @@ def setup_bot() -> discord.ext.commands.Bot:
         await bot.change_presence(status=discord.Status.online, activity=discord.Game(renachan.config.bot_status()))
 
         # Logs the command prefix and a confirmation message indicating that the database is set, and the bot is ready to serve.
-        logging.info(f"{bot.command_prefix} is the command prefix")
-        logging.info("Database is set, and RenaChan is on and ready to be of service :3")
+        logger.info(f"{bot.command_prefix} is the command prefix")
+        logger.info("Database is set, and RenaChan is on and ready to be of service :3")
 
     return bot  # Returns the Discord bot instance with the specified configurations and event handlers.
 

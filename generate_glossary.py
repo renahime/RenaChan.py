@@ -3,10 +3,39 @@ import os  # Link to os module documentation: https://docs.python.org/3/library/
 import re  # Link to re module documentation: https://docs.python.org/3/library/re.html
 import logging  # Link to logging module documentation: https://docs.python.org/3/library/logging.html
 
-### extract_comments(file_path:str) -> list
-### This Function takes a file path as input and extracts all comments from the file. It reads the content of the file line
-### by line and identifies comments, which can be either single-line comments (starting with #) or multi-line comments enclosed
-### between triple quotes """ ir '''. The extracted comments are restored to a list and returned.
+def main():
+    """
+    Main function to analyze and generate a glossary for Python files.
+
+    This function prompts the user to enter a filename (with .py extension) to analyze.
+    It then searches for all Python files in the project directory and its subdirectories.
+    If the entered filename matches any of the found Python files, it generates a glossary for each matching file.
+    The glossary includes the content of the file, logic comments, and function documentation (if any) for each matching file.
+
+    Note: The function `generate_glossary()` is called for each matching file to perform the glossary generation.
+    """
+    filename = input("Enter the filename (with .py extension) to analyze: ")
+    project_dir = os.getcwd()  # Use the current working directory as the base directory
+    python_files = find_python_files(project_dir)
+
+    # Check if the entered filename is among the found Python files
+    matching_files = [file_path for file_path in python_files if os.path.basename(file_path) == filename]
+    if not matching_files:
+        logging.error(f"Error: File '{filename}' not found in the project directory or its subdirectories.")
+    else:
+        logging.info("File found! Generating glossary...")
+        for file_path in matching_files:
+            generate_glossary(file_path)
+
+
+if __name__ == "__main__":
+    # The condition `if __name__ == "__main__":` is used to determine if the script is being run directly or imported as a module.
+    # When a Python script is executed directly, the value of the special variable __name__ is set to "__main__".
+    # If the script is imported as a module into another script, the value of __name__ will be the name of the module instead.
+    # By using this condition, we can ensure that certain blocks of code (e.g., the main function) are executed only when the script is run directly.
+    # In this case, when the script is run directly, we execute the main function, which handles the glossary generation process.
+    main()
+
 def extract_comments(file_path: str) -> list:
     """
     Extracts comments from the given file.
@@ -17,37 +46,42 @@ def extract_comments(file_path: str) -> list:
     Returns:
         list: A list of extracted comments as strings.
     """
-    comments = []  # Initialize an empty list to store extracted comments.
-    ### This line opens the specified file (file_path) in read mode ('r') and assigns it to the variable file.
-    ### The with statement ensures that the file is properly closed after reading, even if an exception occurs.
-    with open(file_path, 'r') as file:
-        lines = file.readlines()  # Read all lines of the file and store them in the 'lines' list.
-        in_comment_block = False  # Flag to keep track of whether we are inside a multiline comment block or not.
+    # Initialize an empty list to store extracted comments.
+    comments = []
 
-        for line in lines:  # Iterate through each line in the 'lines' list.
-            stripped_line = line.strip()  # Remove leading and trailing whitespace from the line.
+    # Flag to keep track of whether we are inside a multiline comment block or not.
+    in_comment_block = False
+
+    # Open the file in read mode using 'with' statement to ensure proper file handling and closure.
+    with open(file_path, 'r') as file:
+        # Read all lines of the file and store them in the 'lines' list.
+        lines = file.readlines()
+
+        # Iterate through each line in the 'lines' list.
+        for line in lines:
+            # Remove leading and trailing whitespace from the line.
+            stripped_line = line.strip()
 
             # Check if the current line starts with triple quotes (multiline string) or single quotes (multiline string).
             if stripped_line.startswith('"""') or stripped_line.startswith("'''"):
-                if in_comment_block:  # If we were inside a multiline comment block, end it.
+                # If we were inside a multiline comment block, end it.
+                if in_comment_block:
                     in_comment_block = False
-                else:  # If we were not inside a multiline comment block, start it.
+                # If we were not inside a multiline comment block, start it.
+                else:
                     in_comment_block = True
 
-            ### If the current line is a single-line comment within a multiline comment block, it removes the leading hash (#) and any surrounding whitespace from the line,
-            ### and then appends the result to the comments list.
-            ### Check if we are inside a multiline comment block and if the line starts with a single hash (#) symbol.
+            # If the current line is a single-line comment within a multiline comment block,
+            # it removes the leading hash (#) and any surrounding whitespace from the line,
+            # and then appends the result to the comments list.
+            # Check if we are inside a multiline comment block and if the line starts with a single hash (#) symbol.
             elif in_comment_block and stripped_line.startswith('#'):
-                # Append the stripped version of the line (without the leading # and any surrounding whitespace) to 'comments'.
+                # Remove the leading # and any surrounding whitespace, then append to 'comments'.
                 comments.append(stripped_line.strip('#').strip())
 
     return comments  # Return the list of extracted comments as strings.
 
 
-### extract_function_docs(file_path:str) -> list
-### This Function reads a Python file, identifies all function names defined in the file, and extracts their corresponding docstrings.
-### It then returns a list of tuples, each containing the function name and its associated documentation. This function is useful for automatically
-### generating documentation or glossaries for Python code by extracting and displaying the docstrings of functions defined in a file.
 def extract_function_docs(file_path: str) -> list:
     """
     Extracts function documentation from the given file.
@@ -58,20 +92,59 @@ def extract_function_docs(file_path: str) -> list:
     Returns:
         list: A list of tuples containing (function_name, documentation) pairs.
     """
-    docs = []  # Create an empty list to store (function_name, documentation) pairs.
 
+    # Create an empty list to store (function_name, documentation) pairs.
+    docs = []
+
+    # Open the file in read mode using 'with' statement to ensure proper file handling and closure.
     with open(file_path, 'r') as file:
-        content = file.read()  # Read the entire content of the file into the 'content' variable.
+        # Read the entire content of the file into the 'content' variable.
+        content = file.read()
 
         # Use a regular expression to find all function names defined in the file.
+        # The regular expression pattern 'def\s+([\w_]+)\s*\(' matches function definitions like 'def function_name('.
+
+        #####################################################################
+        #                           REGEX EXPLANATION                       #
+        # ----------------------------------------------------------------- #
+        # r: This prefix before the regular expression string indicates     #
+        #    that it's a raw string. Raw strings treat backslashes as       #
+        #    literal characters, which is often useful for writing          #
+        #    regular expressions because backslashes are commonly used.     #
+        # def: This part of the regular expression matches the literal      #
+        #    string "def". It's looking for the Python keyword used to      #
+        #    define functions.                                              #
+        # \s+: The \s is a special character that matches any whitespace    #
+        #    character (spaces, tabs, newlines, etc.). The + quantifier     #
+        #    means that it should match one or more occurrences of          #
+        #    whitespace.                                                    #
+        # ([\w_]+): The parentheses ( and ) create a capturing group,       #
+        #    which allows us to extract the content that matches this       #
+        #    part of the regular expression. Inside the capturing group,    #
+        #    [\w_]+ matches one or more word characters or underscores.     #
+        #    \w is a shorthand character class for alphanumeric             #
+        #    characters and underscores. The + quantifier means it should   #
+        #    match one or more occurrences.                                 #
+        # \s*: This part matches zero or more whitespace characters. The    #
+        #    * quantifier means it should match zero or more occurrences.   #
+        # \(: This part matches the literal open parenthesis "(" character. #
+        #    Since parentheses have special meanings in regular             #
+        #    expressions, we need to escape it with a backslash \ to match  #
+        #    the literal character.                                         #
+        #####################################################################
+
         matches = re.findall(r'def\s+([\w_]+)\s*\(', content)
 
+        # Iterate through each function name found in the file.
         for func_name in matches:
-            # For each function name found, use another regular expression to extract the docstring.
+            # For each function name, use another regular expression to extract the docstring.
+            # The regular expression pattern `rf'def\s+{func_name}\s*\(.*?"""(.*?)""")` is used to find docstrings
+            # for functions defined like 'def function_name(...): """docstring"""'.
             doc_string = re.findall(rf'def\s+{func_name}\s*\(.*?"""(.*?)"""', content, re.DOTALL)
 
             # If a docstring is found for the function, add it to the 'docs' list as a tuple.
             if doc_string:
+                # Since the regular expression may capture extra whitespace, we strip the docstring to clean it up.
                 docs.append((func_name, doc_string[0].strip()))
 
     return docs  # Return the list of (function_name, documentation) pairs.
@@ -92,17 +165,26 @@ def extract_function_comments(file_path: str) -> dict:
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
+        # Step through each line in the file.
         for index, line in enumerate(lines):
             stripped_line = line.strip()
 
+            # Check if the current line starts with "def " indicating a function definition.
             if stripped_line.startswith("def "):
+                # Use a regular expression to extract the function name from the line.
                 func_name_match = re.match(r'def\s+([\w_]+)\s*\(', stripped_line)
+
+                # If there's a match (function name found), proceed to extract the function comment.
                 if func_name_match:
                     func_name = func_name_match.group(1)
                     comment = ""
-                    # Check if the previous line is a comment
+
+                    # Check if the previous line is a comment (located above the function definition).
+                    # If it is a comment, strip the leading "#" symbol and any surrounding whitespace to get the comment text.
                     if index - 1 >= 0 and lines[index - 1].strip().startswith("#"):
                         comment = lines[index - 1].strip("#").strip()
+
+                    # Add the function comment to the dictionary with the function name as the key.
                     function_comments[func_name] = comment
 
     return function_comments
@@ -118,6 +200,11 @@ def generate_glossary(file_path: str) -> None:
 
     Args:
         file_path (str): The path of the Python file to generate the glossary for.
+    Notes:
+        1. It takes a file path as input.
+        2. The function reads the content of the file and identifies comments located above each function definition.
+        3. For each function found, it extracts the associated comment (if any) and stores it in a dictionary with the function name as the key.
+        4. Finally, it returns the dictionary containing function names as keys and their associated comments as values.
     """
     # Extract comments from the given file using the 'extract_comments' function
     comments = extract_comments(file_path)
@@ -163,14 +250,38 @@ def find_python_files(base_dir: str) -> list:
 
     Returns:
         list: A list of file paths for all Python files found.
+
+    Notes:
+        1. It takes a base directory path as input.
+        2. The function uses recursion to traverse all directories and subdirectories starting from the base directory.
+        3. For each directory, it collects the file names and checks if they have a .py extension (Python files).
+        4. If a Python file is found, its full path is appended to the list of Python files.
+        5. The function continues recursively for all subdirectories, effectively searching for Python files in all directories.
+        6. Finally, it returns a list of all Python file paths found in the base directory and its subdirectories.
+
+
+        The reason we use recursion in this function is to traverse all subdirectories of the base directory.
+        When we encounter a subdirectory, we call the same function (recursive call) to find Python files within that subdirectory as well.
+        This process continues until all directories and subdirectories have been searched, and we collect all Python file paths.
+        Recursion is a useful technique when dealing with nested data structures or when solving problems that have a repetitive nature.
+        In this case, it allows us to efficiently traverse the directory tree and find Python files in all subdirectories without having to write nested loops.
     """
-    python_files = []
+
+
+    python_files = []  # Create an empty list to store Python file paths.
+
+
+    # The os.walk() function generates the file names in a directory tree by walking either top-down or bottom-up through the directory tree.
+    # For each directory in the tree rooted at the base directory, it yields a 3-tuple (dirpath, dirnames, filenames).
     for root, _, files in os.walk(base_dir):
         for file_name in files:
+            # Check if the file has a .py extension, indicating it is a Python file.
             if file_name.endswith('.py'):
                 file_path = os.path.join(root, file_name)
+                # Add the file path to the list of Python files.
                 python_files.append(file_path)
-    return python_files
+
+    return python_files  # Return the list of Python file paths.
 
 
 ### if __name__ == "__main__" is a special Python construct that checks whether the script is being executed directly or if it is imported as a module into another script.
@@ -181,17 +292,3 @@ def find_python_files(base_dir: str) -> list:
 ### If run directly, it prompts the user to enter a filename, finds all Python files in the project directory and its subdirectories,
 ### and then generates a glossary for the file(s) with the matching name. The glossary includes the content of the file, logic comments,
 ### and function documentation for each matching file. This allows users to quickly analyze and document Python files in their project.
-
-if __name__ == "__main__":
-    filename = input("Enter the filename (with .py extension) to analyze: ")
-    project_dir = os.getcwd()  # Use the current working directory as the base directory
-    python_files = find_python_files(project_dir)
-
-    # Check if the entered filename is among the found Python files
-    matching_files = [file_path for file_path in python_files if os.path.basename(file_path) == filename]
-    if not matching_files:
-        logging.error(f"Error: File '{filename}' not found in the project directory or its subdirectories.")
-    else:
-        logging.info("File found! Generating glossary...")
-        for file_path in matching_files:
-            generate_glossary(file_path)

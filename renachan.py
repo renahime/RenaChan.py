@@ -75,122 +75,178 @@ from renachan.managers.database import initialize_database
 ### This is a module within the renachan package responsible for managing the bot's database.
 ### The initialize_database() function from this module will be used later to initialize the database.
 
-### This part of the script makes an API request to the GitHub repository to get the latest version tag of RenaChan.py.
-### requests.get(): This function is used to perform an HTTP GET request to the specified URL.
-### The GitHub tags represent versions or milestones of the repository. A new tag is created for each version release or significant update.
-### If the request returns a status code of 200 (OK), it checks whether the fetched version matches the current version of the bot (renachan.version()).
-### If it matches, it logs that the bot is running the latest version. If not, it logs whether the version is unlisted or not the latest.
-req = requests.get(f'https://api.github.com/repos/renahime/RenaChan.py/tags')
-response = json.loads(req.text)
-
-if req.status_code == 200:
-    if response[0]['name'] == renachan.version():
-        logging.info("You are currently running the latest version of RenaChan.py!\n")
-    else:
-        version_listed = False
-        for x in response:
-            if x['name'] == renachan.version():
-                version_listed = True
-                logging.info("You are not using our latest version! :(\n")
-        if not version_listed:
-            logging.info("You are currently using an unlisted version!\n")
-
-elif req.status_code == 404:
-    # 404 Not Found
-    logging.error("Latest RenaChan.py version not found!\n")
-elif req.status_code == 500:
-    # 500 Internal Server Error
-    logging.error("An error occurred while fetching the latest RenaChan.py version. [500 Internal Server Error]\n")
-elif req.status_code == 502:
-    # 502 Bad Gateway
-    logging.error("An error occurred while fetching the latest RenaChan.py version. [502 Bad Gateway]\n")
-elif req.status_code == 503:
-    # 503 Service Unavailable
-    logging.error("An error occurred while fetching the latest RenaChan.py version. [503 Service Unavailable]\n")
-else:
-    logging.error("An unknown error has occurred when fetching the latest RenaChan.py version\n")
-    logging.error("HTML Error Code:" + str(req.status_code))
-
-### This part of the script creates the discord bot
-### Here, we create a new discord.Bot instance with specific intents.
-### discord.Intents: Discord.py allows you to define which events you want to receive from the Discord API.
-### In this case, the bot requires access to member-related events, guilds, typing events, messages, and message content.
-### The discord.Intents.default() function creates a set of default intents.
-intents = discord.Intents.default()
-intents.members = True
-intents.guilds = True
-intents.typing = True
-intents.messages = True
-intents.message_content = True
-bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
-
-
-### The on_ready() function is an event in Discord.py that is triggered when the bot connects to Discord and is ready to start receiving events.
-### If the storage type is "sqlite", the function initialize_database() from the renachan.managers.database module is called to initialize the database session for the bot.
-### renachan.events and renachan.cogs.cmds: These are modules within the renachan package that contain event handling and command implementations, respectively. The bot initializes these modules to handle events and commands.
-### bot.change_presence(): This sets the bot's presence on Discord, such as its status and activity (playing a game, streaming, etc.).
-
-
-# The on_ready() function is called when the bot is ready to start receiving events from Discord.
-@bot.event
-async def on_ready():
+def main():
     """
-    Event handler for when the bot connects to Discord and becomes ready.
+    The entry point of the RenaChan.py Discord bot.
 
-    This function is automatically called by the Discord API when the bot successfully connects to Discord and is ready to start processing events.
-    It is triggered only once when the bot is ready to begin handling interactions with the Discord servers.
+    This function performs the following tasks:
+        1. Calls the 'check_latest_version()' function to check if the bot is running the latest version.
+        2. Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
+        3. Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
+        4. Logs a message indicating that the bot is initializing.
+        5. Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
+
+    Notes:
+        - 'check_latest_version()': This function checks the latest version of RenaChan.py on GitHub and logs a message based on whether the bot is running the latest version or not.
+        - 'setup_bot()': This function sets up the Discord bot with the necessary configurations, event handlers, and presence.
+        - 'bot.run()': This call starts the bot's connection to Discord and starts processing events.
+        - Exceptions: The 'try' block catches any exceptions that occur during the bot's execution. If an exception is caught, it logs an error message and exits with status code 1.
+    """
+
+    try:
+        # Calls the 'check_latest_version()' function to check if the bot is running the latest version.
+        check_latest_version()
+
+        # Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
+        bot = setup_bot()
+
+        # Logs a message indicating that the bot is initializing.
+        logging.info("Initializing bot...")
+
+        # Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
+        bot.run(renachan.config.bot_token())
+
+    except Exception as e:
+        # Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
+        logging.error(f"[/!\\] Error: Failed to run bot!\n{e}")
+
+        # Exits the script with status code 1 to indicate an error.
+        exit(1)
+
+def check_latest_version():
+    """
+    Checks the latest version of RenaChan.py on GitHub and logs the status.
+
+    This function makes an API request to the GitHub repository of RenaChan.py to fetch the latest version tags.
+    It then compares the latest version with the current version of the bot to determine if the user is running the latest version or not.
+    The comparison results are logged to provide feedback to the user.
 
     Note:
-        - The event module contains event handlers that define how the discord bot will respond to various events, such as joining or leaving servers.
-          The `renachan.events.__init__(bot)` call initializes these event handlers, allowing the bot to listen for and handle specific events.
-        - The cmds module holds all the custom commands that the discord bot knows. The `renachan.cogs.cmds.__init__(bot)` call initializes these commands,
-          enabling the bot to recognize user commands and perform corresponding actions based on the inputs.
+        - The function uses the 'requests' library to make an HTTP GET request to the GitHub API.
+        - It uses the 'json' library to parse the JSON response from the API.
+        - The function uses the 'logging' module to log messages based on the comparison results.
+
+    Raises:
+        - It may raise an exception if there's an error while making the API request or processing the response.
+
+    """
+    # Make an API request to fetch the latest version tags from the GitHub repository of RenaChan.py
+    req = requests.get(f'https://api.github.com/repos/renahime/RenaChan.py/tags')
+    response = json.loads(req.text)
+
+    if req.status_code == 200:
+        # If the request was successful (status code 200), check if the latest version matches the current version of the bot
+        if response[0]['name'] == renachan.version():
+            # If the versions match, log that the user is running the latest version.
+            logging.info("You are currently running the latest version of RenaChan.py!\n")
+        else:
+            # If the versions don't match, check if the current version is listed in the fetched versions.
+            version_listed = False
+            for x in response:
+                if x['name'] == renachan.version():
+                    version_listed = True
+                    # If the current version is listed, log that the user is not using the latest version.
+                    logging.info("You are not using our latest version! :(\n")
+            if not version_listed:
+                # If the current version is not listed, log that the user is using an unlisted version.
+                logging.info("You are currently using an unlisted version!\n")
+
+    elif req.status_code == 404:
+        # If the request returns a 404 status code, log that the latest RenaChan.py version was not found.
+        logging.error("Latest RenaChan.py version not found!\n")
+    elif req.status_code == 500:
+        # If the request returns a 500 status code, log that there was an internal server error while fetching the latest RenaChan.py version.
+        logging.error("An error occurred while fetching the latest RenaChan.py version. [500 Internal Server Error]\n")
+    elif req.status_code == 502:
+        # If the request returns a 502 status code, log that there was a bad gateway error while fetching the latest RenaChan.py version.
+        logging.error("An error occurred while fetching the latest RenaChan.py version. [502 Bad Gateway]\n")
+    elif req.status_code == 503:
+        # If the request returns a 503 status code, log that the service for fetching the latest RenaChan.py version is unavailable.
+        logging.error("An error occurred while fetching the latest RenaChan.py version. [503 Service Unavailable]\n")
+    else:
+        # If the request returns an unknown status code, log that an unknown error occurred while fetching the latest RenaChan.py version and provide the status code.
+        logging.error("An unknown error has occurred when fetching the latest RenaChan.py version\n")
+        logging.error("HTML Error Code:" + str(req.status_code))
+
+
+def setup_bot() -> discord.ext.commands.Bot:
+    """
+    Sets up the Discord bot with the necessary configurations and event handlers.
+
+    This function performs the following tasks:
+        1. Sets up the intents to define which events the bot should receive from the Discord API.
+        2. Creates a new discord.ext.commands.Bot instance with the specified intents and command prefix '!'.
+        3. Defines an on_ready() event handler that is triggered when the bot connects to Discord and is ready to receive events.
+        4. If the storage type is "sqlite", initializes the database session for the bot using renachan.managers.database.initialize_database().
+        5. Initializes event handlers and command implementations from renachan.events and renachan.cogs.cmds modules.
+        6. Sets the bot's presence (status and activity) on Discord using the configuration from renachan.config.bot_status().
+        7. Logs the command prefix and a confirmation message indicating that the database is set, and the bot is ready to serve.
+
+    Returns:
+        discord.ext.commands.Bot: The Discord bot instance with the specified configurations and event handlers.
     """
 
-    # Initialize the database if the storage type is "sqlite"
-    ### renachan.config.storage_type(): This function from the renachan package returns the type of storage used for the bot's data (e.g., SQLite, MySQL, etc.).
-    if renachan.config.storage_type() == "sqlite":
-        # The session object that SQLAlchemy returns gets assigned to the bot so that we don't need to pass it over to our package/modules
-        bot.db = initialize_database()
+    # Set up the intents to define which events the bot should receive from the Discord API.
+    intents = discord.Intents.default()
+    intents.members = True
+    intents.guilds = True
+    intents.typing = True
+    intents.messages = True
+    intents.message_content = True
 
-    ### Load event handling and command implementations
-    ### The event module contains event handlers that when defined the discord bot will trigger anytime there is an event that needs to be preformed.
-    ### eg. The bot joining a server, someone leaving the server... ext
-    renachan.events.__init__(bot)
-    ### The cmds module is responsible for holding all the commands the discord bot knows
-    ### so when a user in a server uses the prefix and correct command the bot will recognize it and perform an action
-    renachan.cogs.cmds.__init__(bot)
-    ## This step is crucial for the bot to properly listen for and respond to various Discord events and execute custom commands based on user inputs.
+    # Create a new discord.ext.commands.Bot instance with the specified intents and command prefix '!'
+    bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
 
-    # Set the bot's status on Discord
-    await bot.change_presence(status=discord.Status.online,
-                              activity=discord.Game(renachan.config.bot_status()))
+    # Define an on_ready() event handler that is triggered when the bot connects to Discord and is ready to receive events.
+    @bot.event
+    async def on_ready():
+        """
+        Event handler for when the bot connects to Discord and becomes ready.
 
-    logging.info(f"{bot.command_prefix} is the command prefix")
-    logging.info("Database is set, and RenaChan is on and ready to be of service :3")
+        This function is automatically called by the Discord API when the bot successfully connects to Discord and is ready to start processing events.
+        It is triggered only once when the bot is ready to begin handling interactions with the Discord servers.
 
+        Note:
+            - The event module contains event handlers that define how the discord bot will respond to various events, such as joining or leaving servers.
+              The renachan.events.__init__(bot) call initializes these event handlers, allowing the bot to listen for and handle specific events.
+            - The renachan.cogs.cmds.__init__(bot) call initializes command implementations, enabling the bot to recognize user commands and perform corresponding actions based on the inputs.
+        """
 
-### This part is the entry point of the script, where the bot execution begins.
-### The condition if __name__ == "__main__": ensures that this block is only executed when the script is run as the main program, not when it is imported as a module.
-### The block checks if the current CONFIG_VERSION environment variable matches the one stored in the renachan package (renachan.config_version()).
-### If not, it checks if the .env file exists. If it does, it means that the required environment variables are missing, and it logs an error message instructing the user to run renachan.py again after setting up the environment variables using setup.py.
-### If the .env file doesn't exist, it means the setup needs to be performed. The script initializes the setup process using renachan.setup.__init__().
-### If everything is set up correctly, the bot is initialized with bot.run(renachan.config.bot_token()).
+        # If the storage type is "sqlite", initializes the database session for the bot.
+        if renachan.config.storage_type() == "sqlite":
+            bot.db = initialize_database()
+
+        # Initializes event handlers and command implementations from renachan.events and renachan.cogs.cmds modules.
+        renachan.events.__init__(bot)
+        renachan.cogs.cmds.__init__(bot)
+
+        # Sets the bot's presence (status and activity) on Discord using the configuration from renachan.config.bot_status().
+        await bot.change_presence(status=discord.Status.online, activity=discord.Game(renachan.config.bot_status()))
+
+        # Logs the command prefix and a confirmation message indicating that the database is set, and the bot is ready to serve.
+        logging.info(f"{bot.command_prefix} is the command prefix")
+        logging.info("Database is set, and RenaChan is on and ready to be of service :3")
+
+    return bot  # Returns the Discord bot instance with the specified configurations and event handlers.
 
 if __name__ == "__main__":
-    try:
-        # Check if CONFIG_VERSION matches the one stored in the package
-        if os.getenv('CONFIG_VERSION') != renachan.config_version():
-            # Check if .env file exists
-            if os.path.isfile('.env'):
-                logging.error("Missing environment variables. Please backup and delete .env, then run renachan.py again.")
-                quit(2)
+    """
+    The conditional block that checks if the script is being run as the main program.
 
-            logging.warning("Unable to find required environment variables. Running setup.py...")
-            renachan.setup.__init__()  # run setup.py
+    If the script is being run as the main program (not imported as a module), the 'main()' function is called to start the RenaChan.py Discord bot.
+    This conditional block serves as the entry point of the script.
 
-        logging.info("Initializing bot...")
-        bot.run(renachan.config.bot_token())
-    except Exception as e:
-        logging.error(f"[/!\\] Error: Failed to run bot!\n{e}")
-        exit(1)
+    Explanation:
+        - '__name__': A built-in variable in Python that represents the name of the current module. When a Python script is run, the value of '__name__' for that script is set to '__main__'.
+        - '__main__': A special name that indicates the main program. It is the built-in value for '__name__' when the script is executed as the main program.
+        - 'if __name__ == "__main__":': This conditional statement checks if the value of '__name__' is equal to "__main__", which indicates that the script is being run as the main program.
+        - 'main()': The 'main()' function is called within this block to start the RenaChan.py Discord bot's execution.
+
+    Example:
+        If you run the script directly with 'python renachan.py' in the terminal, '__name__' will be '__main__', and the 'main()' function will be called, starting the bot.
+        If you import the script as a module in another Python script, the '__name__' value will be set to the module name, and the 'main()' function won't be called.
+
+    Note:
+        - The 'main()' function is defined earlier in the script and is responsible for initiating the RenaChan.py Discord bot's execution.
+    """
+    main()

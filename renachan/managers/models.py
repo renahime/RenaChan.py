@@ -239,3 +239,56 @@ class Tracker(Base):
             'price': self.price,
             'last_checked': self.last_checked,
         }
+i_like = Table(
+    "i_like", Base.metadata,
+    Column(
+        "finder_id",
+        Integer,
+        ForeignKey("finders.finder_id"),  # Update the foreign key reference to 'finders.finder_id'
+        primary_key=True
+    ),
+    Column(
+         'member_id',  # Corrected table name here
+         Integer,
+         ForeignKey("members.id")  # Corrected table name here
+    ),
+    Column(
+        "i_like_url",
+        String
+    ),
+    Column(
+         "i_like_site",
+         String
+    ),
+    Column(
+         "i_like_title",
+         String
+    )
+)
+
+i_might = Table(
+    "i_might_like", Base.metadata,
+    Column(
+        "finder_id",
+        Integer,
+        ForeignKey("finders.finder_id"),  # Update the foreign key reference to 'finders.finder_id'
+        primary_key=True
+    ),
+    Column(
+         'member_id',  # Corrected table name here
+         Integer,
+         ForeignKey("members.id")  # Corrected table name here
+    ),
+    Column(
+        "i_might_like_url",
+        String
+    ),
+    Column(
+         "i_might_like_site",
+         String
+    ),
+    Column(
+         "i_might_like_table",
+         String
+    )
+)

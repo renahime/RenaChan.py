@@ -3,7 +3,7 @@ import logging
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
-from renachan.managers.models import Base, Server, Owner, Member, Channel, i_like, i_might, Finder, Session, ToDo
+from renachan.managers.models import Base, Server, Owner, Member, Channel, Finder, Session, ToDo, i_like, i_might
 
 
 def initialize_database(logger):
@@ -133,7 +133,9 @@ def initialize_database(logger):
         'member_finder_association',
         'member_todo_association',
         'member_tracker_association',
-        'member_session_association'
+        'member_session_association',
+        'i_like',
+        'i_might_like'
         ]
 
 

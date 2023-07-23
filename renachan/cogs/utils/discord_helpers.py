@@ -4,6 +4,34 @@ from discord.ext import commands
 import logging
 
 async def send_private_message(user, message):
+    """
+    Sends a private message to a user.
+
+    Parameters:
+        user (discord.User): The Discord user to send the message to.
+        message (str): The content of the message to send.
+
+    Returns:
+        bool: True if the message was sent successfully, False if sending the private message was forbidden.
+
+    Explanation:
+    This async function takes a target Discord user (user) and a message (message) as input.
+    It attempts to send a private message to the user using the "user.send(message)" method.
+    If the message is successfully sent, the function returns True. If sending the private message is forbidden,
+    the function returns False.
+
+    Note: This function is meant to be used within an asynchronous context, as it uses the "async" keyword for asynchronous
+    operations with Discord API calls (e.g., sending private messages).
+
+    Example Usage:
+        user = bot.get_user(1234567890)  # Replace 1234567890 with the user ID you want to message.
+        if user:
+            result = await send_private_message(user, "Hello! This is a private message.")
+            if result:
+                print("Private message sent successfully.")
+            else:
+                print("Failed to send the private message.")
+    """
     try:
         # Attempt to send the message to the user privately
         await user.send(message)
@@ -12,7 +40,38 @@ async def send_private_message(user, message):
         return False
 
 async def ping_user_in_server_channel(bot, user, message):
-    # Try to find a general channel in a server that both the bot and user share
+    """
+    Pings a user in the first available general text channel of a server where both the bot and user are present.
+
+    Parameters:
+        bot (discord.Client): The Discord bot client instance.
+        user (discord.User): The Discord user to ping.
+        message (str): The message to send along with the user mention.
+
+    Returns:
+        discord.TextChannel or None: The general text channel where the user was pinged, or None if no suitable channel was found.
+
+    Explanation:
+    This async function takes the Discord bot client (bot), a target user, and a message as input.
+    It then attempts to find the first available general text channel in any of the bot's connected guilds (servers)
+    where both the bot and the user are present as members. Once the general text channel is found, it pings the user
+    by mentioning them in the channel with the provided message.
+
+    The function works as follows:
+
+    1. Iterate through each guild (server) in which the bot is present.
+    2. Check if the target user (user) is a member of the current guild using "user in guild.members".
+    3. If the user is a member of the guild, attempt to find the "general" text channel in that guild using
+       discord.utils.get(guild.text_channels, name="general").
+    4. If a suitable general text channel is found (general_channel is not None), ping the user by mentioning them with
+       their user ID (mention = user.mention) and send the provided message along with the mention.
+    5. After sending the message, return the general text channel where the user was pinged.
+    6. If no suitable general text channel is found in any of the guilds where both the bot and the user are members,
+       return None.
+
+    Note: This function is meant to be used within an asynchronous context, as it uses the "async" keyword for asynchronous
+    operations with Discord API calls (e.g., sending messages).
+    """
     for guild in bot.guilds:
         if user in guild.members:
             general_channel = discord.utils.get(guild.text_channels, name="general")
@@ -24,7 +83,36 @@ async def ping_user_in_server_channel(bot, user, message):
     return None
 
 async def ping_user_in_text_channel(bot, user, message):
-    # Try to find the first available text channel where the bot has permissions to send messages
+    """
+    Pings a user in the first available text channel where the bot has permissions to send messages.
+
+    Parameters:
+        bot (discord.Client): The Discord bot client instance.
+        user (discord.User): The Discord user to ping.
+        message (str): The message to send along with the user mention.
+
+    Returns:
+        discord.TextChannel or None: The text channel where the user was pinged, or None if no suitable channel was found.
+
+    Explanation:
+    This async function takes the Discord bot client (bot), a target user, and a message as input.
+    It then attempts to find the first available text channel in any of the bot's connected guilds where the bot has
+    permissions to send messages. Once the text channel is found, it pings the user by mentioning them in the channel
+    with the provided message.
+
+    The function works as follows:
+
+    1. Iterate through each guild (server) in which the bot is present.
+    2. Use the discord.utils.get() function to find the first available text channel in the guild. The bot checks for
+       the necessary permissions to send messages in each channel.
+    3. If a suitable text channel is found (text_channel is not None), ping the user by mentioning them with their user ID
+       (mention = user.mention) and send the provided message along with the mention.
+    4. After sending the message, return the text channel where the user was pinged.
+    5. If no suitable text channel is found in any of the guilds, return None.
+
+    Note: This function is meant to be used within an asynchronous context, as it uses the "async" keyword for asynchronous
+    operations with Discord API calls (e.g., sending messages).
+    """
     for guild in bot.guilds:
         text_channel = discord.utils.get(guild.text_channels)
         if text_channel:

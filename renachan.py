@@ -74,43 +74,6 @@ from renachan.managers.database import initialize_database
 ### This is a module within the renachan package responsible for managing the bot's database.
 ### The initialize_database() function from this module will be used later to initialize the database.
 
-def main():
-    """
-    The entry point of the RenaChan.py Discord bot.
-
-    This function performs the following tasks:
-        1. Calls the 'check_latest_version()' function to check if the bot is running the latest version.
-        2. Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
-        3. Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
-        4. Logs a message indicating that the bot is initializing.
-        5. Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
-
-    Notes:
-        - 'check_latest_version()': This function checks the latest version of RenaChan.py on GitHub and logs a message based on whether the bot is running the latest version or not.
-        - 'setup_bot()': This function sets up the Discord bot with the necessary configurations, event handlers, and presence.
-        - 'bot.run()': This call starts the bot's connection to Discord and starts processing events.
-        - Exceptions: The 'try' block catches any exceptions that occur during the bot's execution. If an exception is caught, it logs an error message and exits with status code 1.
-    """
-
-    try:
-        # Calls the 'check_latest_version()' function to check if the bot is running the latest version.
-        check_latest_version()
-
-        # Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
-        bot = setup_bot()
-
-        # Logs a message indicating that the bot is initializing.
-        logger.info("Initializing bot...")
-
-        # Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
-        bot.run(renachan.config.bot_token())
-
-    except Exception as e:
-        # Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
-        logger.error(f"[/!\\] Error: Failed to run bot!\n{e}")
-
-        # Exits the script with status code 1 to indicate an error.
-        exit(1)
 
 def check_latest_version():
     """
@@ -194,7 +157,7 @@ def setup_bot() -> discord.ext.commands.Bot:
     intents.message_content = True
 
     # Create a new discord.ext.commands.Bot instance with the specified intents and command prefix '!'
-    bot = commands.Bot(intents=intents, command_prefix='!', help_command=None)
+    bot = commands.Bot(intents=intents, command_prefix='!rena ', help_command=None)
 
     # Define an on_ready() event handler that is triggered when the bot connects to Discord and is ready to receive events.
     @bot.event
@@ -227,6 +190,44 @@ def setup_bot() -> discord.ext.commands.Bot:
         logger.info("Database is set, and RenaChan is on and ready to be of service :3")
 
     return bot  # Returns the Discord bot instance with the specified configurations and event handlers.
+
+def main():
+    """
+    The entry point of the RenaChan.py Discord bot.
+
+    This function performs the following tasks:
+        1. Calls the 'check_latest_version()' function to check if the bot is running the latest version.
+        2. Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
+        3. Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
+        4. Logs a message indicating that the bot is initializing.
+        5. Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
+
+    Notes:
+        - 'check_latest_version()': This function checks the latest version of RenaChan.py on GitHub and logs a message based on whether the bot is running the latest version or not.
+        - 'setup_bot()': This function sets up the Discord bot with the necessary configurations, event handlers, and presence.
+        - 'bot.run()': This call starts the bot's connection to Discord and starts processing events.
+        - Exceptions: The 'try' block catches any exceptions that occur during the bot's execution. If an exception is caught, it logs an error message and exits with status code 1.
+    """
+
+    try:
+        # Calls the 'check_latest_version()' function to check if the bot is running the latest version.
+        check_latest_version()
+
+        # Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
+        bot = setup_bot()
+
+        # Logs a message indicating that the bot is initializing.
+        logger.info("Initializing bot...")
+
+        # Initializes the bot by running it with 'bot.run(renachan.config.bot_token())'.
+        bot.run(renachan.config.bot_token())
+
+    except Exception as e:
+        # Catches any exceptions that occur during the bot's execution and logs an error message along with the exception details.
+        logger.error(f"[/!\\] Error: Failed to run bot!\n{e}")
+
+        # Exits the script with status code 1 to indicate an error.
+        exit(1)
 
 if __name__ == "__main__":
     """

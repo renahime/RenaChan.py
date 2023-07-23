@@ -2,9 +2,12 @@ import discord
 import time
 import psutil
 from discord.ext import commands as cmd
-from .utils import *
+from .utils.discord_helpers import *
+from .utils.creepy_crawler import *
+from datetime import datetime
 
 import renachan
+import renachan.managers.models as models
 
 def __init__(bot):
     """
@@ -27,6 +30,7 @@ def __init__(bot):
     # Initialize individual commands for the bot instance 'bot'
     hello(bot)   # Create the 'hello' command that sends a simple greeting message.
     setup_harass_command(bot)  # Create the 'harass' command that allows the bot to send continuous messages to a user.
+    setup_track_command(bot) # Create the 'track' command that allows the bot to track an item the user is interested in
 
 
 def hello(bot):
@@ -101,8 +105,6 @@ def setup_harass_command(bot):
         if user:
             # Send the initial message to the user
             await send_message(bot, user, ctx.channel, message)
-            count = 1
-            logging.info(f"Harass message {count} has been sent")
             # Continuously send the message respecting the rate limit
             while True:
                 try:
@@ -110,20 +112,86 @@ def setup_harass_command(bot):
                 except asyncio.TimeoutError:
                     # If the wait times out, send the message again
                     await send_message(bot, user, ctx.channel, message)
-                    count = count + 1
-                    logging.info(f"Harass message {count} has been sent")
                 else:
                     if response.content.strip() == password:
                         # Stop harassment if the user provided the correct password
                         await ctx.send(f"I have stopped annoying {username}")
-                        logging.info(f"{username} was harrassed {count} times")
                         return
         else:
             # If the user was not found in any server where the bot is a member
             await ctx.send(f"{username} was not found in any server where I am a member.")
 
+def setup_track_command(bot):
+    """
+    Discord bot command to track an item's price and availability using web crawling.
 
+    Parameters:
+        ctx (discord.ext.commands.Context): The Discord command context.
+        url (str): The URL of the web page to crawl for the item's information.
+        item_id (str): The 'id' attribute value of the HTML element that contains the item's price.
+        currency_symbol (str): The currency symbol used to represent the price.
 
+    Returns:
+        None
+
+    Explanation:
+    This function is a Discord bot command to track an item's price and availability using web crawling.
+    It takes a Discord command context (ctx), the URL of the web page to crawl (url), the 'id' attribute value of the HTML
+    element that contains the item's price (item_id), and the currency symbol used to represent the price (currency_symbol).
+
+    The function attempts to find an embed in the command message and extracts the title from it.
+
+    It then calls the crawler_by_item_id() function to crawl the web page, extract the item's price, and parse it as a floating-point value.
+
+    If a single price is found, the function creates a new tracker entry in the database with the item's information and the author's
+    (member) and server's (guild) relationships. It sets the availability as True, the initial price, and the current timestamp
+    as the last_checked value.
+
+    Finally, the function adds the new tracker entry to the database and commits the changes. The bot responds to the user with
+    appropriate messages about the tracking process.
+
+    If more than one price is found, the bot informs the user that it currently does not support tracking items with multiple prices.
+
+    Note: The function uses a database model (models.Tracker) to store the tracked item's information in the database.
+
+    Example Usage:
+        !track https://example.com/item123 price_element $  # The bot will attempt to track the item's price from the provided URL and HTML element ID.
+    """
+    @bot.command()
+    async def track(ctx, url: str, item_id: str, currency_symbol: str):
+
+        await ctx.send(f"Testing finding {url}, {item_id}, {currency_symbol}")
+
+        title = None  # Initialize 'title' with a default value
+
+        # Check if the command message has any embeds
+        if ctx.message.embeds:
+            embed = ctx.message.embeds[0]
+            title = embed.title
+
+        await ctx.send(f"Creepy crawling the web... :3")
+        try:
+            possible_resuls = crawler_by_item_id(url=url,item_id=item_id)
+            if len(possible_resuls) == 1:
+                    member = bot.db.query(models.Member).filter_by(id=ctx.author.id).first()
+                    server = bot.db.query(models.Server).filter_by(id=ctx.guild.id).first()
+                    await ctx.send(f"""I found the {title} you want!\nAdding it to database now... will check prices\nWIP: Getting availablity, adding tasks to make requests to check prices""")
+                    new_tracker = models.Tracker(
+                    track_url=url,
+                    title=title,
+                    available=True,  # Set initial values as necessary
+                    price=possible_resuls[0],      # Set initial values as necessary
+                    last_checked=datetime.utcnow(),  # Set the current timestamp as the last_checked value
+                    member=member,  # Set the member relationship
+                    server=server   # Set the server relationship
+                )
+                    bot.db.add(new_tracker)
+                    bot.db.commit()
+                    await ctx.send(f"Success! I added it to the database. Will update you if the price changes or it goes out of stock :3")
+            else:
+                await ctx.send(f'I found more than one price!!! I currently do not have funcionality to track this :c sowwi')
+        except Exception as e:
+            await ctx.send(e)
 
 
 ######################### WIP

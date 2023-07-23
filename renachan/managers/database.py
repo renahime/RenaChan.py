@@ -121,18 +121,21 @@ def initialize_database(logger):
 
 
         expected_tables = [
-            'servers',
-            'owners',
-            'members',
-            'channels',
-            'i_like',
-            'i_might_like',
-            'finders',
-            'sessions',
-            'to_dos',
-            'member_server_association',
-            'trackers'
+        'servers',
+        'owners',
+        'members',
+        'channels',
+        'finders',
+        'sessions',
+        'to_dos',
+        'trackers',
+        'member_server_association',
+        'member_finder_association',
+        'member_todo_association',
+        'member_tracker_association',
+        'member_session_association'
         ]
+
 
 
         # Check if all expected tables exist in the database

@@ -2,6 +2,12 @@ import discord
 import asyncio
 from discord.ext import commands
 import logging
+from .creepy_crawler import *
+import renachan
+import renachan.managers.models as models
+import datetime
+from .database_helpers import *
+
 
 async def send_private_message(user, message):
     """
@@ -195,3 +201,26 @@ def in_dm():
             else:
                 raise commands.CheckFailure("This command can only be used in a direct message (DM).")
     return commands.check(predicate)
+
+async def start_at_id(ctx, bot, url, title, item_id, currency_symbol):
+    try:
+        possible_results = crawler_by_item_id(url=url, item_id=item_id)
+        if possible_results:
+            if len(possible_results) == 1:
+                await add_tracker(ctx, bot, title, url, price=possible_results[0])
+            else:
+                await ctx.send(f"Sorry I found too many results... I don't have functionality to go through them all!")
+        else:
+            await ctx.send(f"I couldn't find the {title} you were looking for :c, I will someday tho so keep updated on me :3")
+    except Exception as e:
+        print(e)
+        await ctx.send(str(e))
+
+async def start_at_class(ctx, bot, url, title, class_name, currency_symbol):
+    await ctx.send(f"Here are the {url}, {title}, {class_name}, {currency_symbol} from your request")
+    try:
+        possible_results = crawler_by_item_class(url=url, class_name=class_name)
+        print(possible_results)
+    except Exception as e:
+        print(e)
+        await ctx.send(str(e))

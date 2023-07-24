@@ -130,10 +130,6 @@ def initialize_database(logger):
         'to_dos',
         'trackers',
         'member_server_association',
-        'member_finder_association',
-        'member_todo_association',
-        'member_tracker_association',
-        'member_session_association',
         'i_like',
         'i_might_like'
         ]

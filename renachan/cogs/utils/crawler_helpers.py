@@ -32,9 +32,16 @@ def get_html_content(url):
         except requests.exceptions.HTTPError as e:
             print(f"Error fetching the content: {e}")
     """
-    response = requests.get(url)
+    # Headers for request
+    HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
+        'Accept-Language': 'en-US, en;q=0.5'
+    }
+    response = requests.get(url, headers=HEADERS)
+    print(response.content)
     response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
     return response.content
+
 
 def find_elements_by_id(html_content, item_id):
     """
@@ -118,3 +125,9 @@ def extract_floats_from_prices(prices):
             extracted_floats.append(value)
 
     return extracted_floats
+
+def find_elements_by_class(html_content, class_name):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    elements = soup.find_all(class_=class_name)
+    print(elements)
+    return elements

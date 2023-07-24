@@ -2,6 +2,8 @@ import json
 import renachan
 import discord
 import renachan.managers.models as models
+from discord.ext import commands
+
 
 
 def __init__(bot):
@@ -103,3 +105,13 @@ def on_guild_join(bot):
                 first_text_channel = next((channel for channel in guild.text_channels), None)
                 if first_text_channel:
                     await first_text_channel.send(welcome_message)
+
+def on_guild_join(bot):
+    @bot.event
+    async def on_command_error(ctx, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(str(error))
+        elif isinstance(error, commands.CommandNotFound):
+            await ctx.send("Invalid command. Please check the command syntax.")
+        else:
+            await ctx.send("An error occurred while executing the command.")

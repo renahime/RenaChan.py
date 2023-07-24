@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 from .crawler_helpers import *
+from .proxy import proxify
+import re
+from parsel import Selector
+from urllib.parse import urljoin
 
 
 def crawler_by_item_id(url, item_id):
@@ -45,8 +49,52 @@ def crawler_by_item_id(url, item_id):
         return f"Failed to fetch HTML content from {url}: {e}"
 
     elements = find_elements_by_id(html_content, item_id)
+
     possible_results = []
     for element in elements:
         possible_results.append(element.get_text())
     parsed_floats = extract_floats_from_prices(possible_results)
     return parsed_floats
+
+def crawler_by_item_class(url, class_name):
+    	# Headers for request
+    try:
+        html_content = get_html_content(url)
+    except requests.exceptions.RequestException as e:
+        return f"Failed to fetch HTML content from {url}: {e}"
+    elements = find_elements_by_class(html_content, class_name)
+
+    print(elements)
+
+def crawl_amazon(url, value, search_terms):
+    # Headers for request
+    try:
+        response = requests.get(proxify(url))
+        if response.status_code == 200:
+            sel = Selector(text=response.text)
+            optimal_product = 0
+                ## Extract Product Data From Search Page
+            search_products = sel.css("div.s-result-item[data-component-type=s-search-result]")
+            optimal_product = {}
+            for product in search_products:
+                relative_url = product.css("h2>a::attr(href)").get()
+                asin = relative_url.split('/')[3] if len(relative_url.split('/')) >= 4 else None
+                product_url = urljoin('https://www.amazon.com/', relative_url).split("?")[0]
+                if value < product.css(".a-price[data-a-size=xl] .a-offscreen::text").get():
+                    optimal_product = product
+
+            optimal_product={
+                    "keyword": search_terms,
+                    "asin": asin,
+                    "url": product_url,
+                    "ad": True if "/slredirect/" in product_url else False,
+                    "title": product.css("h2>a>span::text").get(),
+                    "price": product.css(".a-price[data-a-size=xl] .a-offscreen::text").get(),
+                    "real_price": product.css(".a-price[data-a-size=b] .a-offscreen::text").get(),
+                    "rating": (product.css("span[aria-label~=stars]::attr(aria-label)").re(r"(\d+\.*\d*) out") or [None])[0],
+                    "rating_count": product.css("span[aria-label~=stars] + span::attr(aria-label)").get(),
+                    "thumbnail_url": product.xpath("//img[has-class('s-image')]/@src").get(),
+                }
+    except Exception as e:
+        print("Error", e)
+        return None

@@ -3,6 +3,7 @@ import time
 import psutil
 from discord.ext import commands as cmd
 from .utils.discord_helpers import *
+from .utils.command_checks import *
 from .utils.creepy_crawler import *
 from datetime import datetime
 
@@ -31,6 +32,7 @@ def __init__(bot):
     hello(bot)   # Create the 'hello' command that sends a simple greeting message.
     setup_harass_command(bot)  # Create the 'harass' command that allows the bot to send continuous messages to a user.
     setup_track_command(bot) # Create the 'track' command that allows the bot to track an item the user is interested in
+    setup_amazon_command(bot)
 
 
 def hello(bot):
@@ -158,40 +160,40 @@ def setup_track_command(bot):
         !track https://example.com/item123 price_element $  # The bot will attempt to track the item's price from the provided URL and HTML element ID.
     """
     @bot.command()
-    async def track(ctx, url: str, item_id: str, currency_symbol: str):
-
-        await ctx.send(f"Testing finding {url}, {item_id}, {currency_symbol}")
-
+    async def track(ctx, type:str, url: str, start: str, currency_symbol: str):
+        await ctx.send(f"Testing finding {type}, {url}, {start}, {currency_symbol}")
         title = None  # Initialize 'title' with a default value
-
         # Check if the command message has any embeds
         if ctx.message.embeds:
             embed = ctx.message.embeds[0]
             title = embed.title
+            description = embed.description
 
-        await ctx.send(f"Creepy crawling the web... :3")
-        try:
-            possible_resuls = crawler_by_item_id(url=url,item_id=item_id)
-            if len(possible_resuls) == 1:
-                    member = bot.db.query(models.Member).filter_by(id=ctx.author.id).first()
-                    server = bot.db.query(models.Server).filter_by(id=ctx.guild.id).first()
-                    await ctx.send(f"""I found the {title} you want!\nAdding it to database now... will check prices\nWIP: Getting availablity, adding tasks to make requests to check prices""")
-                    new_tracker = models.Tracker(
-                    track_url=url,
-                    title=title,
-                    available=True,  # Set initial values as necessary
-                    price=possible_resuls[0],      # Set initial values as necessary
-                    last_checked=datetime.utcnow(),  # Set the current timestamp as the last_checked value
-                    member=member,  # Set the member relationship
-                    server=server   # Set the server relationship
-                )
-                    bot.db.add(new_tracker)
-                    bot.db.commit()
-                    await ctx.send(f"Success! I added it to the database. Will update you if the price changes or it goes out of stock :3")
-            else:
-                await ctx.send(f'I found more than one price!!! I currently do not have funcionality to track this :c sowwi')
-        except Exception as e:
-            await ctx.send(e)
+
+        if type == "id":
+            await ctx.send(f"Creepy crawling the web... :3")
+            await start_at_id(ctx, bot, url, title, start, currency_symbol)
+        else:
+            type == "class"
+            await start_at_class(ctx, bot, url, title, start, currency_symbol)
+
+
+def setup_amazon_command(bot):
+    @bot.command()
+    @commands.check(correct_amazon_format)
+    async def amazon(ctx, *search):
+        # Join the search terms using '+'
+        value = float(search[-1])
+        search_terms = '+'.join([str(term) for term in search[:-1]])
+        url = f'https://www.amazon.com/s?k={search_terms}&ref=sr_st_price-asc-rank'
+        await ctx.send(f"I'll check the prices of ${search_terms} for you! I'll see if I can find any around ${value}")
+        await ctx.send(url)
+        await crawl_amazon(url, value, search_terms=search_terms)
+        # await crawl_amazon(url, value)
+
+
+
+
 
 
 ######################### WIP

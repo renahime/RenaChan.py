@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 .vscode/
 dev.db
+renachan/cogs/utils/proxy.py
+renachan/cogs/utils/creepy_crawler.py
+renachan/cogs/utils/crawler_helpers.py
+renachan/cogs/utils/discord_helpers.py

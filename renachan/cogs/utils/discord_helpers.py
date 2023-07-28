@@ -1,8 +1,8 @@
 import discord
 import asyncio
 from discord.ext import commands
+from .crawler import CreepyCrawler
 import logging
-from .creepy_crawler import *
 import renachan
 import renachan.managers.models as models
 import datetime
@@ -204,7 +204,8 @@ def in_dm():
 
 async def start_at_id(ctx, bot, url, title, item_id, currency_symbol):
     try:
-        possible_results = crawler_by_item_id(url=url, item_id=item_id)
+        crawler = CreepyCrawler(url=url)
+        possible_results = crawler.crawler_by_item_id(item_id=item_id)
         if possible_results:
             if len(possible_results) == 1:
                 await add_tracker(ctx, bot, title, url, price=possible_results[0])
@@ -217,10 +218,28 @@ async def start_at_id(ctx, bot, url, title, item_id, currency_symbol):
         await ctx.send(str(e))
 
 async def start_at_class(ctx, bot, url, title, class_name, currency_symbol):
-    await ctx.send(f"Here are the {url}, {title}, {class_name}, {currency_symbol} from your request")
     try:
-        possible_results = crawler_by_item_class(url=url, class_name=class_name)
-        print(possible_results)
+        crawler = CreepyCrawler(url=url)
+        possible_results = crawler.crawler_by_item_class(class_name=class_name)
+        if possible_results:
+            if len(possible_results) ==1:
+                print(possible_results)
+                await ctx.send(f"Parsing Price")
+                price = crawler.extract_number_from_class(possible_results[0], currency=currency_symbol)
+                print(price)
+                await add_tracker(ctx,bot,title,url,price=price)
+            else:
+                await ctx.send(f"I found more than one result... continuing to search")
+                possible_results = crawler.find_correct_element(possible_results, title)
+                if possible_results:
+                    await ctx.send(f"Parsing Price")
+                    price = crawler.extract_number_from_class(possible_results, currency=currency_symbol)
+                    if isinstance(price, (float, int)):
+                        await add_tracker(ctx,bot,title,url,price=price)
+                    else:
+                        await ctx.send(f"Sowwi I couldn't find the price :c")
+                else:
+                    await ctx.send(f"Sowwi couldn't find what you were looking for :c")
     except Exception as e:
         print(e)
         await ctx.send(str(e))

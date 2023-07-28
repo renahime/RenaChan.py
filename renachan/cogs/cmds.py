@@ -4,7 +4,6 @@ import psutil
 from discord.ext import commands as cmd
 from .utils.discord_helpers import *
 from .utils.command_checks import *
-from .utils.creepy_crawler import *
 from datetime import datetime
 
 import renachan
@@ -32,7 +31,6 @@ def __init__(bot):
     hello(bot)   # Create the 'hello' command that sends a simple greeting message.
     setup_harass_command(bot)  # Create the 'harass' command that allows the bot to send continuous messages to a user.
     setup_track_command(bot) # Create the 'track' command that allows the bot to track an item the user is interested in
-    setup_amazon_command(bot)
 
 
 def hello(bot):
@@ -165,6 +163,7 @@ def setup_track_command(bot):
         title = None  # Initialize 'title' with a default value
         # Check if the command message has any embeds
         if ctx.message.embeds:
+
             embed = ctx.message.embeds[0]
             title = embed.title
             description = embed.description
@@ -178,18 +177,7 @@ def setup_track_command(bot):
             await start_at_class(ctx, bot, url, title, start, currency_symbol)
 
 
-def setup_amazon_command(bot):
-    @bot.command()
-    @commands.check(correct_amazon_format)
-    async def amazon(ctx, *search):
-        # Join the search terms using '+'
-        value = float(search[-1])
-        search_terms = '+'.join([str(term) for term in search[:-1]])
-        url = f'https://www.amazon.com/s?k={search_terms}&ref=sr_st_price-asc-rank'
-        await ctx.send(f"I'll check the prices of ${search_terms} for you! I'll see if I can find any around ${value}")
-        await ctx.send(url)
-        await crawl_amazon(url, value, search_terms=search_terms)
-        # await crawl_amazon(url, value)
+
 
 
 

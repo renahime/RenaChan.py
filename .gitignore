@@ -6,3 +6,4 @@ __pycache__/
 .vscode/
 dev.db
 renachan/cogs/utils/crawler.py
+model_train_upload_workflow.ipynb

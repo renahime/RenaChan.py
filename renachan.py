@@ -160,6 +160,27 @@ def setup_bot() -> discord.ext.commands.Bot:
     # Create a new discord.ext.commands.Bot instance with the specified intents and command prefix '!'
     bot = commands.Bot(intents=intents, command_prefix='!rena ', help_command=None)
 
+    bot.api_endpoint = renachan.config.api_url() + renachan.config.get_model()
+    bot.huggingface_token = renachan.config.get_huggingface()
+    bot.request_headers = {
+        'Authorization': 'Bearer {}'.format(bot.huggingface_token)
+    }
+
+    def query(bot, payload):
+        """
+        make request to the Hugging Face model API
+        """
+        data = json.dumps(payload)
+        response = requests.request('POST',
+                                    bot.api_endpoint,
+                                    headers=bot.request_headers,
+                                    data=data)
+        ret = json.loads(response.content.decode('utf-8'))
+        return ret
+
+    bot.query = query
+
+
     # Define an on_ready() event handler that is triggered when the bot connects to Discord and is ready to receive events.
     @bot.event
     async def on_ready():

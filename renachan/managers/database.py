@@ -131,7 +131,7 @@ def initialize_database(logger):
         'trackers',
         'member_server_association',
         'i_like',
-        'i_might_like'
+        'i_might_like',
         ]
 
 

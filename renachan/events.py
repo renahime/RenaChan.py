@@ -3,6 +3,7 @@ import renachan
 import discord
 import renachan.managers.models as models
 from discord.ext import commands
+from .cogs.utils.discord_helpers import ai_chat
 
 
 
@@ -87,45 +88,13 @@ def on_guild_join(bot):
                     await first_text_channel.send(welcome_message)
 
 def on_message(bot):
-    """
-    This function is called when the bot joins a new guild (server). It performs the following tasks:
-    1. Extracts guild information, such as server ID, owner ID, server name, and owner username.
-    2. Checks if the owner already exists in the database and adds it if not.
-    3. Adds the new server to the database.
-    4. Associates guild members with the server in the database, will include new members to the database if they are not there.
-    5. Finds the 'general' channel in the guild and sends a welcome message there or in the first text channel.
-
-    Parameters:
-        guild (discord.Guild): The Discord guild (server) that the bot has joined.
-
-    Notes:
-        - This function assumes that 'renachan.config' and 'renachan.models' have been imported and properly set up.
-        - The function relies on a database session named 'bot.db' to perform database operations.
-        - It is assumed that 'bot' is an instance of the bot (client) used to interact with Discord.
-
-    """
     @bot.event
     async def on_message(message):
-        # ignore the message if it comes from the bot itself
-        if message.author.id == bot.user.id:
+    # Check if the message is a command (starts with your bot's command prefix)
+        if message.content.startswith("!"):
+            # Process the command as usual
+            await bot.process_commands(message)
+        elif isinstance(message.channel, discord.DMChannel):
+            # Handle the AI chat feature for non-command messages in DMs
+            await ai_chat(bot, message)
             return
-
-        # form query payload with the content of the message
-        payload = {'inputs': {'text': message.content}}
-
-        # while the bot is waiting on a response from the model
-        # set the its status as typing for user-friendliness
-        async with message.channel.typing():
-          response = bot.query(bot, payload)
-        bot_response = response.get('generated_text', None)
-
-        # we may get ill-formed response if the model hasn't fully loaded
-        # or has timed out
-        if not bot_response:
-            if 'error' in response:
-                bot_response = '`Error: {}`'.format(response['error'])
-            else:
-                bot_response = 'Hmm... something is not right.'
-
-        # send the model's response to the Discord channel
-        await message.channel.send(bot_response)

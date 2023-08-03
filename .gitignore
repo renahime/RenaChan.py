@@ -7,3 +7,4 @@ __pycache__/
 dev.db
 renachan/cogs/utils/crawler.py
 model_train_upload_workflow.ipynb
+renachan/cogs/utils/discord_helpers.py

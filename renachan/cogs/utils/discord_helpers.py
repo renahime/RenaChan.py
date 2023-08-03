@@ -5,8 +5,8 @@ from .crawler import CreepyCrawler
 import logging
 import renachan
 import renachan.managers.models as models
-import datetime
-from .database_helpers import *
+from datetime import datetime, time
+from .database_helpers import add_tracker, add_dm_tracker, track_time
 
 
 async def send_private_message(user, message):
@@ -204,30 +204,87 @@ def in_dm():
 
 async def start_at_id(ctx, bot, url, title, item_id, currency_symbol):
     try:
+        time_start = time.time()
+        data = {'user_id': ctx.author.id, 'username': ctx.author.name, 'command':ctx.message.content}
         crawler = CreepyCrawler(url=url)
         possible_results = crawler.crawler_by_item_id(item_id=item_id)
         if possible_results:
             if len(possible_results) == 1:
-                await add_tracker(ctx, bot, title, url, price=possible_results[0])
+                if ctx.guild:
+                    await add_tracker(ctx, bot, title, url,price=possible_results[0])
+                    time_end = time.time()
+                    data.last_response = "success"
+                    data.duration = time_end - time_start
+                    await track_time(ctx, data, bot)
+                else:
+                    await add_dm_tracker(ctx,bot,title,url,price=possible_results[0])
+                    time_end = time.time()
+                    data.last_response = "success"
+                    data.duration = time_end - time_start
+                    await track_time(ctx, data, bot)
             else:
-                await ctx.send(f"Sorry I found too many results... I don't have functionality to go through them all!")
+                await ctx.send(f"I found more than one result... continuing to search")
+                possible_results = crawler.find_correct_element(possible_results, title)
+                if possible_results:
+                    await ctx.send(f"Parsing Price")
+                    price = crawler.extract_floats_from_prices(possible_results, currency=currency_symbol, price=possible_results[0])
+                    if isinstance(price, (float, int)):
+                        if ctx.guild:
+                            await add_tracker(ctx,bot,title,url,price=price)
+                            time_end = time.time()
+                            data.last_response = "success"
+                            data.duration = time_end - time_start
+                            await track_time(ctx, data, bot)
+                        else:
+                            await add_dm_tracker(ctx,bot,title,url,price=price)
+                            time_end = time.time()
+                            data.last_response = "success"
+                            data.duration = time_end - time_start
+                            await track_time(ctx, data, bot)
+                    else:
+                        await ctx.send(f"Sowwi I couldn't find the price :c")
+                        time_end = time.time()
+                        data.last_response = "error: line 246"
+                        data.duration = time_end - time_start
+                        await track_time(ctx, data, bot)
+                else:
+                    await ctx.send(f"Sowwi couldn't find what you were looking for :c")
+                    time_end = time.time()
+                    data.last_response = "error: line 251"
+                    data.duration = time_end - time_start
+                    await track_time(ctx, data, bot)
         else:
             await ctx.send(f"I couldn't find the {title} you were looking for :c, I will someday tho so keep updated on me :3")
+            time_end = time.time()
+            data.last_response = "error: line 256"
+            data.duration = time_end - time_start
+            await track_time(ctx, data, bot)
     except Exception as e:
         print(e)
         await ctx.send(str(e))
 
 async def start_at_class(ctx, bot, url, title, class_name, currency_symbol):
     try:
+        time_start = time.time()
+        data = {'user_id': ctx.author.id, 'username': ctx.author.name, 'command':ctx.message.content}
         crawler = CreepyCrawler(url=url)
         possible_results = crawler.crawler_by_item_class(class_name=class_name)
         if possible_results:
             if len(possible_results) ==1:
-                print(possible_results)
                 await ctx.send(f"Parsing Price")
                 price = crawler.extract_number_from_class(possible_results[0], currency=currency_symbol)
-                print(price)
-                await add_tracker(ctx,bot,title,url,price=price)
+                if ctx.guild:
+                    await add_tracker(ctx,bot,title,url,price=price)
+                    time_end = time.time()
+                    data.last_response = "success"
+                    data.duration = time_end - time_start
+                    track_time(ctx, data, bot)
+                else:
+                    await add_dm_tracker(ctx,bot,title,url,price=price)
+                    time_end = time.time()
+                    data.last_response = "success"
+                    data.duration = time_end - time_start
+                    track_time(ctx, data, bot)
             else:
                 await ctx.send(f"I found more than one result... continuing to search")
                 possible_results = crawler.find_correct_element(possible_results, title)
@@ -235,11 +292,56 @@ async def start_at_class(ctx, bot, url, title, class_name, currency_symbol):
                     await ctx.send(f"Parsing Price")
                     price = crawler.extract_number_from_class(possible_results, currency=currency_symbol)
                     if isinstance(price, (float, int)):
-                        await add_tracker(ctx,bot,title,url,price=price)
+                        if ctx.guild:
+                            await add_tracker(ctx,bot,title,url,price=price)
+                            time_end = time.time()
+                            data.last_response = "success"
+                            data.duration = time_end - time_start
+                            track_time(ctx, data, bot)
+                        else:
+                            await add_dm_tracker(ctx,bot,title,url,price=price)
+                            time_end = time.time()
+                            data.last_response = "success"
+                            data.duration = time_end - time_start
+                            track_time(ctx, data, bot)
                     else:
                         await ctx.send(f"Sowwi I couldn't find the price :c")
+                        time_end = time.time()
+                        data.last_response = "error: line 266"
+                        data.duration = time_end - time_start
+                        track_time(ctx, data, bot)
                 else:
                     await ctx.send(f"Sowwi couldn't find what you were looking for :c")
+                    time_end = time.time()
+                    data.last_response = "error: line 271"
+                    data.duration = time_end - time_start
+                    track_time(ctx, data, bot)
     except Exception as e:
         print(e)
         await ctx.send(str(e))
+
+async def ai_chat(bot, message):
+    # Ignore the message if it comes from the bot itself
+    if message.author.id == bot.user.id:
+        return
+
+    # Form query payload with the content of the message
+    payload = {'inputs': {'text': message.content}}
+
+    # While the bot is waiting on a response from the model,
+    # set its status as typing for user-friendliness
+    async with message.channel.typing():
+        response = bot.query(bot, payload)
+
+    bot_response = response.get('generated_text', None)
+
+    # We may get an ill-formed response if the model hasn't fully loaded
+    # or has timed out
+    if not bot_response:
+        if 'error' in response:
+            bot_response = '`Error: {}`'.format(response['error'])
+        else:
+            bot_response = 'Hmm... something is not right.'
+
+    # Send the model's response to the Discord channel
+    await message.channel.send(bot_response)

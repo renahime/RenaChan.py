@@ -212,6 +212,15 @@ class Tracker(Base):
     member = relationship('Member', back_populates='trackers')
 
 
+class BotCommands(Base):
+    __tablename__ = 'bot_commands'
+    id = Column(Integer)
+    user_id = Column(Integer)
+    command = Column(String)
+    last_response = Column(String)
+    duration = Column(Float)
+
+
 i_like = Table(
     "i_like", Base.metadata,
     Column(

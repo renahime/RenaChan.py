@@ -7,7 +7,7 @@ import renachan
 import renachan.managers.models as models
 from datetime import datetime
 import time as time
-from .database_helpers import add_tracker, add_dm_tracker, track_time
+from .database_helpers import add_tracker, track_time
 
 
 async def send_private_message(user, message):
@@ -212,8 +212,8 @@ async def start_crawl(ctx, bot, command_data):
         ## Grabbing html tags that share this class
         if "class" in command_data['type']:
             possible_results = crawler.crawler_by_item_class(class_name=command_data['start'])
-
-        possible_results = crawler.crawler_by_item_id(item_id=command_data['start'])
+        elif "id" in command_data['type']:
+            possible_results = crawler.crawler_by_item_id(item_id=command_data['start'])
 
         ## Log Error
         if not possible_results:
@@ -222,9 +222,10 @@ async def start_crawl(ctx, bot, command_data):
             data['last_response'] = "error: unable to find html tag"
             data['duration'] = time_end - time_start
             await track_time(ctx, bot, data)
+            return
 
         ## Finding correct item
-        correct_element = crawler.find_correct_element(possible_results, command_data['title'], ctx)
+        correct_element = await crawler.find_correct_element(possible_results, command_data['title'], ctx)
 
         ## Log Error
         if not correct_element:
@@ -233,18 +234,26 @@ async def start_crawl(ctx, bot, command_data):
             data['last_response'] = "error: unable to find price"
             data['duration'] = time_end - time_start
             await track_time(ctx, bot, data)
+            return
 
+        #Getting price
         await ctx.send(f"Parsing Price")
         price = crawler.extract_number_from_class(possible_results[0], currency=command_data['currency_symbol'])
+
+        #Add to Database
         await add_tracker(ctx,bot,command_data['title'],command_data['url'],price=price)
+
+        #Log Success
         time_end = time.time()
         data['last_response'] = "success"
         data['duration'] = time_end - time_start
-        await track_time(ctx, data, bot)
+        await track_time(ctx, bot, data)
 
+        return
     except Exception as e:
         print(e)
         await ctx.send(str(e))
+        return
 
 async def ai_chat(bot, message):
     # Ignore the message if it comes from the bot itself

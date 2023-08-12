@@ -9,18 +9,14 @@ def add_to_database(bot, item):
      bot.db.close()
 
 def check_membership(bot, ctx):
-    member = bot.db.query(models.Member).filter_by(id=ctx.author.guild.id).first()
-
+    member = bot.db.query(models.Member).filter_by(id=ctx.author.id).first()
     if member:
-         return member
-
+        return member
     new_member = models.Member(
             id=ctx.author.id,
             username=ctx.author.name
         )
-
     add_to_database(bot, new_member)
-
     return new_member
 
 def create_tracker(bot, ctx, title, url, price, member):
@@ -48,7 +44,7 @@ def create_tracker(bot, ctx, title, url, price, member):
 
 
 async def add_tracker(ctx, bot, title, url, price):
-    member = check_membership()
+    member = check_membership(bot, ctx)
 
     await ctx.send(f"""I found the {title} you want!\nChecking the database now... \nWIP: Getting availability, adding tasks/stat queries to make requests to check prices""")
 

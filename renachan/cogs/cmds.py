@@ -165,7 +165,6 @@ def setup_track_command(bot):
 
             embed = ctx.message.embeds[0]
             title = embed.title
-            description = embed.description
 
         command_data = {
             'type':type,

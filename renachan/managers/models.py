@@ -214,8 +214,9 @@ class Tracker(Base):
 
 class BotCommands(Base):
     __tablename__ = 'bot_commands'
-    id = Column(Integer)
+    id = Column(Integer, primary_key = True)
     user_id = Column(Integer)
+    username = Column(String)
     command = Column(String)
     last_response = Column(String)
     duration = Column(Float)

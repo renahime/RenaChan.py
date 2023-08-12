@@ -167,10 +167,13 @@ def setup_track_command(bot):
             title = embed.title
             description = embed.description
 
-        if type == "id":
-            await ctx.send(f"Creepy crawling the web... :3")
-            await start_at_id(ctx, bot, url, title, start, currency_symbol)
-        else:
-            type == "class"
-            await ctx.send(f"Creepy crawling the web... :3")
-            await start_at_class(ctx, bot, url, title, start, currency_symbol)
+        command_data = {
+            'type':type,
+            'url':url,
+            'start':start,
+            'currency_symbol': currency_symbol,
+            'title':title,
+        }
+
+        await ctx.send(f"Creepy crawling the web... :3")
+        await start_crawl(ctx, bot, command_data)

@@ -132,6 +132,7 @@ def initialize_database(logger):
         'member_server_association',
         'i_like',
         'i_might_like',
+        'bot_commands'
         ]
 
 

@@ -5,7 +5,8 @@ from .crawler import CreepyCrawler
 import logging
 import renachan
 import renachan.managers.models as models
-from datetime import datetime, time
+from datetime import datetime
+import time as time
 from .database_helpers import add_tracker, add_dm_tracker, track_time
 
 
@@ -202,120 +203,45 @@ def in_dm():
                 raise commands.CheckFailure("This command can only be used in a direct message (DM).")
     return commands.check(predicate)
 
-async def start_at_id(ctx, bot, url, title, item_id, currency_symbol):
+async def start_crawl(ctx, bot, command_data):
     try:
         time_start = time.time()
         data = {'user_id': ctx.author.id, 'username': ctx.author.name, 'command':ctx.message.content}
-        crawler = CreepyCrawler(url=url)
-        possible_results = crawler.crawler_by_item_id(item_id=item_id)
-        if possible_results:
-            if len(possible_results) == 1:
-                if ctx.guild:
-                    await add_tracker(ctx, bot, title, url,price=possible_results[0])
-                    time_end = time.time()
-                    data.last_response = "success"
-                    data.duration = time_end - time_start
-                    await track_time(ctx, data, bot)
-                else:
-                    await add_dm_tracker(ctx,bot,title,url,price=possible_results[0])
-                    time_end = time.time()
-                    data.last_response = "success"
-                    data.duration = time_end - time_start
-                    await track_time(ctx, data, bot)
-            else:
-                await ctx.send(f"I found more than one result... continuing to search")
-                possible_results = crawler.find_correct_element(possible_results, title)
-                if possible_results:
-                    await ctx.send(f"Parsing Price")
-                    price = crawler.extract_floats_from_prices(possible_results, currency=currency_symbol, price=possible_results[0])
-                    if isinstance(price, (float, int)):
-                        if ctx.guild:
-                            await add_tracker(ctx,bot,title,url,price=price)
-                            time_end = time.time()
-                            data.last_response = "success"
-                            data.duration = time_end - time_start
-                            await track_time(ctx, data, bot)
-                        else:
-                            await add_dm_tracker(ctx,bot,title,url,price=price)
-                            time_end = time.time()
-                            data.last_response = "success"
-                            data.duration = time_end - time_start
-                            await track_time(ctx, data, bot)
-                    else:
-                        await ctx.send(f"Sowwi I couldn't find the price :c")
-                        time_end = time.time()
-                        data.last_response = "error: line 246"
-                        data.duration = time_end - time_start
-                        await track_time(ctx, data, bot)
-                else:
-                    await ctx.send(f"Sowwi couldn't find what you were looking for :c")
-                    time_end = time.time()
-                    data.last_response = "error: line 251"
-                    data.duration = time_end - time_start
-                    await track_time(ctx, data, bot)
-        else:
-            await ctx.send(f"I couldn't find the {title} you were looking for :c, I will someday tho so keep updated on me :3")
-            time_end = time.time()
-            data.last_response = "error: line 256"
-            data.duration = time_end - time_start
-            await track_time(ctx, data, bot)
-    except Exception as e:
-        print(e)
-        await ctx.send(str(e))
+        crawler = CreepyCrawler(url=command_data["url"])
 
-async def start_at_class(ctx, bot, url, title, class_name, currency_symbol):
-    try:
-        time_start = time.time()
-        data = {'user_id': ctx.author.id, 'username': ctx.author.name, 'command':ctx.message.content}
-        crawler = CreepyCrawler(url=url)
-        possible_results = crawler.crawler_by_item_class(class_name=class_name)
-        if possible_results:
-            if len(possible_results) ==1:
-                await ctx.send(f"Parsing Price")
-                price = crawler.extract_number_from_class(possible_results[0], currency=currency_symbol)
-                if ctx.guild:
-                    await add_tracker(ctx,bot,title,url,price=price)
-                    time_end = time.time()
-                    data.last_response = "success"
-                    data.duration = time_end - time_start
-                    track_time(ctx, data, bot)
-                else:
-                    await add_dm_tracker(ctx,bot,title,url,price=price)
-                    time_end = time.time()
-                    data.last_response = "success"
-                    data.duration = time_end - time_start
-                    track_time(ctx, data, bot)
-            else:
-                await ctx.send(f"I found more than one result... continuing to search")
-                possible_results = crawler.find_correct_element(possible_results, title)
-                if possible_results:
-                    await ctx.send(f"Parsing Price")
-                    price = crawler.extract_number_from_class(possible_results, currency=currency_symbol)
-                    if isinstance(price, (float, int)):
-                        if ctx.guild:
-                            await add_tracker(ctx,bot,title,url,price=price)
-                            time_end = time.time()
-                            data.last_response = "success"
-                            data.duration = time_end - time_start
-                            track_time(ctx, data, bot)
-                        else:
-                            await add_dm_tracker(ctx,bot,title,url,price=price)
-                            time_end = time.time()
-                            data.last_response = "success"
-                            data.duration = time_end - time_start
-                            track_time(ctx, data, bot)
-                    else:
-                        await ctx.send(f"Sowwi I couldn't find the price :c")
-                        time_end = time.time()
-                        data.last_response = "error: line 266"
-                        data.duration = time_end - time_start
-                        track_time(ctx, data, bot)
-                else:
-                    await ctx.send(f"Sowwi couldn't find what you were looking for :c")
-                    time_end = time.time()
-                    data.last_response = "error: line 271"
-                    data.duration = time_end - time_start
-                    track_time(ctx, data, bot)
+        ## Grabbing html tags that share this class
+        if "class" in command_data['type']:
+            possible_results = crawler.crawler_by_item_class(class_name=command_data['start'])
+
+        possible_results = crawler.crawler_by_item_id(item_id=command_data['start'])
+
+        ## Log Error
+        if not possible_results:
+            await ctx.send(f"Sowwi couldn't find what you were looking for :c")
+            time_end = time.time()
+            data['last_response'] = "error: unable to find html tag"
+            data['duration'] = time_end - time_start
+            await track_time(ctx, bot, data)
+
+        ## Finding correct item
+        correct_element = crawler.find_correct_element(possible_results, command_data['title'], ctx)
+
+        ## Log Error
+        if not correct_element:
+            await ctx.send(f"Sowwi I couldn't find the right price :c")
+            time_end = time.time()
+            data['last_response'] = "error: unable to find price"
+            data['duration'] = time_end - time_start
+            await track_time(ctx, bot, data)
+
+        await ctx.send(f"Parsing Price")
+        price = crawler.extract_number_from_class(possible_results[0], currency=command_data['currency_symbol'])
+        await add_tracker(ctx,bot,command_data['title'],command_data['url'],price=price)
+        time_end = time.time()
+        data['last_response'] = "success"
+        data['duration'] = time_end - time_start
+        await track_time(ctx, data, bot)
+
     except Exception as e:
         print(e)
         await ctx.send(str(e))

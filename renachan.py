@@ -95,8 +95,6 @@ def check_latest_version():
     # Make an API request to fetch the latest version tags from the GitHub repository of RenaChan.py
     req = requests.get(f'https://api.github.com/repos/renahime/RenaChan.py/tags')
     response = json.loads(req.text)
-    print(req)
-    print(req.status_code)
     if req.status_code == 200:
         # If the request was successful (status code 200), check if the latest version matches the current version of the bot
         if response[0]['name'] == renachan.version():

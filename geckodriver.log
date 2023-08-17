@@ -1,0 +1,573 @@
+1692210123683	geckodriver	INFO	Listening on 127.0.0.1:46375
+1692210123688	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "46611" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilep0cbjH"
+Error: no DISPLAY environment variable specified
+1692210288908	geckodriver	INFO	Listening on 127.0.0.1:56531
+1692210288912	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "48005" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileqvce5o"
+Error: no DISPLAY environment variable specified
+1692210475241	geckodriver	INFO	Listening on 127.0.0.1:38241
+1692210475246	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... .0" "--remote-debugging-port" "44871" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileQr9Cym"
+Unable to init server: Could not connect: Connection refused
+Error: cannot open display: :0.0
+1692210677780	geckodriver	INFO	Listening on 127.0.0.1:37917
+1692210677784	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ss" "--remote-debugging-port" "46503" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileO0RWwe"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692210679243	Marionette	INFO	Marionette enabled
+1692210679341	Marionette	INFO	Listening on port 33441
+WebDriver BiDi listening on ws://127.0.0.1:46503
+Read port: 33441
+1692210679583	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+DevTools listening on ws://127.0.0.1:46503/devtools/browser/ba2c2c00-5384-423f-864c-c34aab25ae5e
+1692210681857	Marionette	INFO	Stopped listening on port 33441
+console.error: (new Error("Data is not ready.", "resource://gre/modules/JSONFile.sys.mjs", 180))
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692211155919	geckodriver	INFO	Listening on 127.0.0.1:54559
+1692211155924	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "42635" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileWLmSFv"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692211157390	Marionette	INFO	Marionette enabled
+1692211157475	Marionette	INFO	Listening on port 34367
+WebDriver BiDi listening on ws://127.0.0.1:42635
+Read port: 34367
+1692211157731	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:42635/devtools/browser/3a1fc249-6e79-4f74-a6e6-eb89f4fea020
+1692211160199	Marionette	INFO	Stopped listening on port 34367
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692211177465	geckodriver	INFO	Listening on 127.0.0.1:33849
+1692211177470	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "60471" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilejzsyRm"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692211179090	Marionette	INFO	Marionette enabled
+1692211179174	Marionette	INFO	Listening on port 38781
+WebDriver BiDi listening on ws://127.0.0.1:60471
+Read port: 38781
+1692211179453	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:60471/devtools/browser/b3d44ff7-55d8-4a32-a2e5-a6f571ca687a
+1692211182105	Marionette	INFO	Stopped listening on port 38781
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692211973747	geckodriver	INFO	Listening on 127.0.0.1:40017
+1692211973752	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "47273" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileiPN4NC"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692211975292	Marionette	INFO	Marionette enabled
+1692211975393	Marionette	INFO	Listening on port 45147
+WebDriver BiDi listening on ws://127.0.0.1:47273
+Read port: 45147
+1692211975665	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:47273/devtools/browser/f88eaa5a-0271-4987-9fce-c7ce5fc292c9
+1692211978047	Marionette	INFO	Stopped listening on port 45147
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212252299	geckodriver	INFO	Listening on 127.0.0.1:34581
+1692212252304	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "33013" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileMMXCuh"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212253884	Marionette	INFO	Marionette enabled
+1692212253990	Marionette	INFO	Listening on port 45969
+WebDriver BiDi listening on ws://127.0.0.1:33013
+Read port: 45969
+1692212254061	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:33013/devtools/browser/80b7ea3e-1544-4a96-b909-35b558a914b1
+1692212256349	Marionette	INFO	Stopped listening on port 45969
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212292213	geckodriver	INFO	Listening on 127.0.0.1:57295
+1692212292218	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "60829" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileuQjrYf"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212293734	Marionette	INFO	Marionette enabled
+1692212293817	Marionette	INFO	Listening on port 45415
+Read port: 45415
+WebDriver BiDi listening on ws://127.0.0.1:60829
+1692212293884	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:60829/devtools/browser/380c75de-93e3-4c65-b870-dd8ce79e90c1
+1692212296789	Marionette	INFO	Stopped listening on port 45415
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212297570	geckodriver	INFO	Listening on 127.0.0.1:51723
+1692212298074	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ome/rena/.mozilla/firefox/u21o80fy.default" "--remote-debugging-port" "53491" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212299445	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212299492	Marionette	INFO	Listening on port 42629
+WebDriver BiDi listening on ws://127.0.0.1:53491
+Read port: 42629
+1692212299619	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:53491/devtools/browser/4c4adcc0-181e-44a4-98c8-482b9c423025
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212304578	Marionette	INFO	Stopped listening on port 42629
+JavaScript warning: https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql, line 1: Script terminated by timeout at:
+value@https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql:1:114977
+value@https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql:1:114614
+
+JavaScript warning: https://accounts.google.com/gsi/button?logo_alignment=center&shape=pill&size=large&text=continue_with&theme=undefined&type=undefined&width=325px&client_id=990339570472-k6nqn1tpmitg8pui82bfaun3jrpmiuhs.apps.googleusercontent.com&iframe_id=gsi_303341_951171&as=bBXtFfdCQ74BtCik5oebLg, line 171: Script terminated by timeout at:
+_.sh/</<@/_/gsi/_/js/k=gsi.gsi.en_US.hI2jEycSOnA.O/am=AMI/d=1/rs=AF0KOtVSpIZjiYz19KSUiT4EvevI8_aNOA/m=credential_button_library:171:1195
+
+JavaScript warning: https://lnkd.demdex.net/dest5.html?d_nsid=0#https%3A%2F%2Fwww.linkedin.com, line 9: Script terminated by timeout at:
+processMessage@https://lnkd.demdex.net/dest5.html?d_nsid=0#https%3A%2F%2Fwww.linkedin.com:9:3
+processThreadYieldedMessages@https://lnkd.demdex.net/dest5.html?d_nsid=0#https%3A%2F%2Fwww.linkedin.com:8:360
+processThreadYieldedMessages/<@https://lnkd.demdex.net/dest5.html?d_nsid=0#https%3A%2F%2Fwww.linkedin.com:8:420
+
+1692212346373	geckodriver	INFO	Listening on 127.0.0.1:38861
+1692212346378	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "39537" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilet9SaBz"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212347940	Marionette	INFO	Marionette enabled
+1692212348044	Marionette	INFO	Listening on port 39241
+WebDriver BiDi listening on ws://127.0.0.1:39537
+Read port: 39241
+1692212348283	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:39537/devtools/browser/f8cbd38e-72f1-4b45-ba6f-4df438702d8d
+1692212350612	Marionette	INFO	Stopped listening on port 39241
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212351414	geckodriver	INFO	Listening on 127.0.0.1:52397
+1692212351921	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ome/rena/.mozilla/firefox/u21o80fy.default" "--remote-debugging-port" "41289" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212353482	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212353530	Marionette	INFO	Listening on port 38165
+WebDriver BiDi listening on ws://127.0.0.1:41289
+Read port: 38165
+1692212353660	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:41289/devtools/browser/74ac9768-d2c0-46a6-a240-d42bb4d78eb7
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212358777	Marionette	INFO	Stopped listening on port 38165
+1692212374680	geckodriver	INFO	Listening on 127.0.0.1:56331
+1692212374685	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "50457" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileoFJzRT"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212376263	Marionette	INFO	Marionette enabled
+1692212376340	Marionette	INFO	Listening on port 38299
+WebDriver BiDi listening on ws://127.0.0.1:50457
+Read port: 38299
+1692212376612	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:50457/devtools/browser/1b9ab3d9-3b2d-4027-9af4-8df4024762d4
+1692212379000	Marionette	INFO	Stopped listening on port 38299
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212379906	geckodriver	INFO	Listening on 127.0.0.1:57257
+1692212380410	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "58995" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilehyMRs7"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212381805	Marionette	INFO	Marionette enabled
+1692212381896	Marionette	INFO	Listening on port 34577
+Read port: 34577
+WebDriver BiDi listening on ws://127.0.0.1:58995
+1692212381970	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:58995/devtools/browser/84883a44-70fb-4b0d-ace1-411885a6a21e
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212388589	Marionette	INFO	Stopped listening on port 34577
+JavaScript warning: https://accounts.google.com/gsi/button?logo_alignment=center&shape=pill&size=large&text=continue_with&theme=undefined&type=undefined&width=325px&client_id=990339570472-k6nqn1tpmitg8pui82bfaun3jrpmiuhs.apps.googleusercontent.com&iframe_id=gsi_387311_209154&as=51bPNosn1tY%2FxE4%2F496lKQ, line 172: Script terminated by timeout at:
+_.sh/</<@/_/gsi/_/js/k=gsi.gsi.en_US.hI2jEycSOnA.O/am=ANI/d=1/rs=AF0KOtX9aPgrruH9qMMIVgBjkONBiyZUvw/m=credential_button_library:172:1195
+
+JavaScript warning: https://static.licdn.com/sc/h/6y2czwba46q3wsh2b0d0g6trj, line 186: Script terminated by timeout at:
+Re/d.port1.onmessage@https://static.licdn.com/sc/h/6y2czwba46q3wsh2b0d0g6trj:186:347
+
+1692212444018	geckodriver	INFO	Listening on 127.0.0.1:42075
+1692212444023	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "35129" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileF68T5C"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212445648	Marionette	INFO	Marionette enabled
+1692212445783	Marionette	INFO	Listening on port 44219
+WebDriver BiDi listening on ws://127.0.0.1:35129
+Read port: 44219
+1692212446063	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:35129/devtools/browser/a70d7e8d-a4e3-40ae-8a43-de46b74653bb
+1692212449006	Marionette	INFO	Stopped listening on port 44219
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212449894	geckodriver	INFO	Listening on 127.0.0.1:51103
+1692212450398	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ome/rena/.mozilla/firefox/u21o80fy.default" "--remote-debugging-port" "49041" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212451902	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212451953	Marionette	INFO	Listening on port 38825
+WebDriver BiDi listening on ws://127.0.0.1:49041
+Read port: 38825
+1692212452065	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:49041/devtools/browser/e5c8a725-2bc3-4850-be72-9b03054e25fa
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212457307	Marionette	INFO	Stopped listening on port 38825
+1692212469533	geckodriver	INFO	Listening on 127.0.0.1:47697
+1692212469539	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "58753" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilepHsSWL"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212471099	Marionette	INFO	Marionette enabled
+1692212471180	Marionette	INFO	Listening on port 37281
+WebDriver BiDi listening on ws://127.0.0.1:58753
+Read port: 37281
+1692212471451	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:58753/devtools/browser/910ecb52-4503-43f6-9b33-aa67c4ebc939
+1692212474092	Marionette	INFO	Stopped listening on port 37281
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212475051	geckodriver	INFO	Listening on 127.0.0.1:38459
+1692212475555	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ome/rena/.mozilla/firefox/u21o80fy.default" "--remote-debugging-port" "39485" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212477061	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212477109	Marionette	INFO	Listening on port 43523
+WebDriver BiDi listening on ws://127.0.0.1:39485
+Read port: 43523
+1692212477223	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:39485/devtools/browser/eee8b951-4a25-4543-aabc-839de8cf4b59
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/aero-v1/sc/h/axpm75j5lsp5srtsrvjn13ozy, line 2: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/aero-v1/sc/h/axpm75j5lsp5srtsrvjn13ozy, line 2: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+console.error: "update.locale" " file doesn't exist in either the application or GRE directories"
+JavaScript warning: https://static.licdn.com/aero-v1/sc/h/5mic7em4akle2l5km6kwwo2hf, line 1: Script terminated by timeout at:
+emit@https://static.licdn.com/aero-v1/sc/h/5mic7em4akle2l5km6kwwo2hf:1:56269
+zt@https://static.licdn.com/aero-v1/sc/h/5mic7em4akle2l5km6kwwo2hf:1:56478
+
+JavaScript warning: https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql, line 1: Script terminated by timeout at:
+emit@https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql:1:106974
+Ti@https://static.licdn.com/sc/h/6mzfdgdkyw015zjnbi8yad3ql:1:107183
+
+
+(firefox:12113): Gtk-WARNING **: 14:01:55.107: Error loading theme icon 'view-refresh' for stock: Icon 'view-refresh' not present in theme Yaru
+
+(firefox:12113): Gtk-WARNING **: 14:01:55.108: Error loading theme icon 'window-close' for stock: Icon 'window-close' not present in theme Yaru
+1692212587307	geckodriver	INFO	Listening on 127.0.0.1:42673
+1692212587312	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "48737" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile2gGbGE"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212587983	Marionette	INFO	Marionette enabled
+1692212588081	Marionette	INFO	Listening on port 37707
+WebDriver BiDi listening on ws://127.0.0.1:48737
+Read port: 37707
+1692212588365	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:48737/devtools/browser/0615b586-90c2-4e4e-b5a5-b49852fe78db
+1692212591365	Marionette	INFO	Stopped listening on port 37707
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212592161	geckodriver	INFO	Listening on 127.0.0.1:36723
+1692212592665	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ome/rena/.mozilla/firefox/u21o80fy.default" "--remote-debugging-port" "41947" "--remote-allow-hosts" "localhost" "-no-remote"
+Read port: 43523
+1692212592667	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/51t74mlo1ty7vakn3a80a9jcp, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7v44l5aw6ujgcy3nh3lqxmucj, line 105: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212596496	Marionette	INFO	Stopped listening on port 43523
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212598364	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212598410	Marionette	INFO	Listening on port 32775
+WebDriver BiDi listening on ws://127.0.0.1:41947
+console.error: ({})
+DevTools listening on ws://127.0.0.1:41947/devtools/browser/bdb685bd-1fa0-4e94-9349-4351d054c16e
+console.warn: LoginHelper(Main): "Couldn't parse specified uri about:newtab with error NS_ERROR_FAILURE"
+console.warn: LoginHelper(Main): "Couldn't parse specified uri about:newtab with error NS_ERROR_FAILURE"
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1692212898518	geckodriver	INFO	Listening on 127.0.0.1:50047
+1692212898523	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "51789" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile8vr6wf"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212900138	Marionette	INFO	Marionette enabled
+1692212900280	Marionette	INFO	Listening on port 44731
+WebDriver BiDi listening on ws://127.0.0.1:51789
+Read port: 44731
+1692212900560	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:51789/devtools/browser/d85aa304-0d79-4580-914d-8953c11fa6fb
+1692212903100	Marionette	INFO	Stopped listening on port 44731
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212904070	geckodriver	INFO	Listening on 127.0.0.1:32905
+1692212904574	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... /.mozilla/firefox/noxxdiqs.default-release" "--remote-debugging-port" "42141" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212906124	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212906172	Marionette	INFO	Listening on port 42451
+Read port: 42451
+WebDriver BiDi listening on ws://127.0.0.1:42141
+1692212906234	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:42141/devtools/browser/ac21728f-842c-4134-a5a9-7171f7602150
+JavaScript error: resource:///actors/ContextMenuChild.sys.mjs, line 559: TypeError: doc is null
+JavaScript warning: https://static.licdn.com/sc/h/darlw1c8i2p85zol12kkqz8t2, line 19817: unreachable code after return statement
+JavaScript warning: https://static.licdn.com/sc/h/aer9u8w9zdfbnfuhsntc69qrd, line 2571: unreachable code after return statement
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1168: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1164: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692212914414	Marionette	INFO	Stopped listening on port 42451
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1261: Script terminated by timeout at:
+14446/value/this.perfObserver<@https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11:1261:38
+
+1692212937038	geckodriver	INFO	Listening on 127.0.0.1:49055
+1692212937043	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "60371" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilen6CxAI"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212938533	Marionette	INFO	Marionette enabled
+1692212938633	Marionette	INFO	Listening on port 45803
+Read port: 45803
+WebDriver BiDi listening on ws://127.0.0.1:60371
+1692212938712	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:60371/devtools/browser/e7114351-fd4b-4369-b276-4fc54b47490b
+1692212941489	Marionette	INFO	Stopped listening on port 45803
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692212942295	geckodriver	INFO	Listening on 127.0.0.1:56969
+1692212942800	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... /.mozilla/firefox/noxxdiqs.default-release" "--remote-debugging-port" "50867" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692212944348	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692212944398	Marionette	INFO	Listening on port 40737
+Read port: 40737
+WebDriver BiDi listening on ws://127.0.0.1:50867
+1692212944420	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:50867/devtools/browser/a42523be-5cae-4b79-8904-45c9eaedd9fb
+1692212950982	Marionette	INFO	Stopped listening on port 40737
+1692213152636	geckodriver	INFO	Listening on 127.0.0.1:50583
+1692213152642	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "39663" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebX956N"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692213154272	Marionette	INFO	Marionette enabled
+1692213154359	Marionette	INFO	Listening on port 34667
+WebDriver BiDi listening on ws://127.0.0.1:39663
+Read port: 34667
+1692213154673	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:39663/devtools/browser/90b07c3b-2394-4d9c-8ab8-d2fe575f8ff4
+1692213157211	Marionette	INFO	Stopped listening on port 34667
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692213158150	geckodriver	INFO	Listening on 127.0.0.1:50309
+1692213158655	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... /.mozilla/firefox/noxxdiqs.default-release" "--remote-debugging-port" "37939" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692213160187	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692213160233	Marionette	INFO	Listening on port 33043
+WebDriver BiDi listening on ws://127.0.0.1:37939
+Read port: 33043
+1692213160344	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:37939/devtools/browser/c06dcdf5-d3a7-49ff-87b3-031f8c136fdd
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1168: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1164: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+[GFX1-]: Couldn't sanitize RENDERER device: D3D12
+1692213167129	Marionette	INFO	Stopped listening on port 33043
+JavaScript warning: https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11, line 1102: Script terminated by timeout at:
+value@https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11:1102:3
+u@https://static.licdn.com/sc/h/7skm3dba7hua9ugrsfcboxw11:1083:19
+
+1692214038989	geckodriver	INFO	Listening on 127.0.0.1:43187
+1692214038994	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... te" "--remote-debugging-port" "53859" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileqKN2xc"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692214040551	Marionette	INFO	Marionette enabled
+1692214040633	Marionette	INFO	Listening on port 37267
+WebDriver BiDi listening on ws://127.0.0.1:53859
+Read port: 37267
+1692214040904	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:53859/devtools/browser/7bd9cca0-493f-4155-9a5d-b494b285c0a8
+1692214043342	Marionette	INFO	Stopped listening on port 37267
+JavaScript error: resource://services-settings/Utils.sys.mjs, line 229: TypeError: NetworkError: Network request failed
+1692214044124	geckodriver	INFO	Listening on 127.0.0.1:60459
+1692214044627	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... /.mozilla/firefox/noxxdiqs.default-release" "--remote-debugging-port" "35781" "--remote-allow-hosts" "localhost" "-no-remote"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+[GFX1-]: glxtest: libEGL missing
+[GFX1-]: vaapitest: ERROR
+[GFX1-]: vaapitest: VA-API test failed: failed to open renderDeviceFD.
+
+1692214046150	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-ignore-certificate-errors"
+console.error: "Warning: unrecognized command line flag" "-disable-extensions"
+console.error: "Warning: unrecognized command line flag" "-disable-blink-features"
+1692214046194	Marionette	INFO	Listening on port 33897
+WebDriver BiDi listening on ws://127.0.0.1:35781
+Read port: 33897
+1692214046316	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.error: ({})
+DevTools listening on ws://127.0.0.1:35781/devtools/browser/48005b77-84de-492d-940a-cd48af0bbb6f
+1692214052243	Marionette	INFO	Stopped listening on port 33897
+JavaScript warning: https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js?cb=1692213900000, line 1: Script terminated by timeout at:
+lh@https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js?cb=1692213900000:1:1016
+@https://platform.linkedin.com/litms/utag/voyager-web-feed/utag.js?cb=1692213900000:1:17661
+
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PBackground::Msg_PVerifySSLServerCertConstructor Processing error: message was deserialized, but the handler returned false (indicating failure)
+

@@ -8,3 +8,5 @@ dev.db
 renachan/cogs/utils/crawler.py
 renachan/cogs/utils/discord_helpers.py
 linkedIn_config.py
+geckodriver.log
+renachan/cogs/utils/linkedIn_constants.py

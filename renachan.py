@@ -11,7 +11,7 @@ import os
 import sys
 import requests
 import json
-import logging
+import subprocess
 from make_logger import initialize_logger
 
 ### os, sys, requests, json, logging: These are standard Python libraries that provide various functionalities for handling operating system tasks, making HTTP requests,
@@ -130,6 +130,9 @@ def check_latest_version():
         logger.error("HTML Error Code:" + str(req.status_code))
 
 
+def test_linked():
+    subprocess.run(['python', 'linkedIn_test.py'])
+
 def setup_bot() -> discord.ext.commands.Bot:
     """
     Sets up the Discord bot with the necessary configurations and event handlers.
@@ -232,6 +235,9 @@ def main():
     try:
         # Calls the 'check_latest_version()' function to check if the bot is running the latest version.
         check_latest_version()
+
+        #Runs the linkedIn test script to ensure we can use job applying feature.
+        test_linked()
 
         # Calls the 'setup_bot()' function to set up the Discord bot with the necessary configurations and event handlers.
         bot = setup_bot()

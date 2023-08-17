@@ -14,6 +14,12 @@ def bot_token():
 def bot_prefix():
     return os.getenv('BOT_PREFIX', '!rena ')
 
+def keywords():
+    return os.get('KEYWORDS')
+
+def locations():
+    return os.get('LOCATION')
+
 def api_url():
     return os.getenv('API_URL')
 

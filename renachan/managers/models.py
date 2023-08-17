@@ -220,6 +220,37 @@ class BotCommands(Base):
     command = Column(String)
     last_response = Column(String)
     duration = Column(Float)
+    def to_dict(self):
+            return {
+                'id': self.id,
+                'user_id': self.user_id,
+                'username': self.username,
+                'command': self.command,
+                'last_response': self.last_response,
+                'duration': self.duration,
+                'duration': self.duration,
+            }
+
+class LinkedInUrls(Base):
+    __tablename__ = 'linkedin_urls'
+    id = Column(Integer, primary_key = True)
+    url = Column(String)
+    keyword = Column(String)
+    location = Column(String)
+    applied = Column(Boolean)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'url': self.url,
+            'keyword':self.keyword,
+            'location':self.location,
+            'applied': self.applied,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
 
 
 i_like = Table(

@@ -2,6 +2,8 @@ import os, time, sys
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
+from linkedIn_config import firefoxProfileRootDir
 
 from make_logger import initialize_logger
 
@@ -34,38 +36,31 @@ def check_selenium():
 
 def check_connection():
     try:
-        ip = "no"
-        firefox_driver = webdriver.Remote(
-            command_executor=f'http://{ip}:4444/wd/hub',
-            desired_capabilities={'browserName': 'firefox'}
-        )
-        firefox_driver.get('https://renahime.github.io/')
-        if firefox_driver.execute_script('return document.readyState') != 'complete':
-            raise Exception('Page did not load completely')
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument("--headless")
+        firefox_driver = webdriver.Firefox()
+        firefox_driver.get("https://renahime.github.io/")
+        if (firefox_driver.title.index("welcome")>-1):
+            logger.info("Selenium and geckodriver are working")
+        else:
+            logger.error("Please check if selenium and gekodriver are installed")
         firefox_driver.quit()
     except ImportError as e:
         logger.error(e)
 
 def checkSeleniumLinkedIn():
 
-    options = Options()
-    options
+    options = webdriver.FirefoxOptions()
     options.add_argument("--ignore-certificate-errors")
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-blink-features")
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--profile")
+    options.add_argument(firefoxProfileRootDir)
 
-    browser = webdriver.Chrome(options=options)
+    browser = webdriver.Firefox(options=options)
 
-    try:
-        browser.get("https://renahime.github.io/")
-        if (browser.title.index("welcome")>-1):
-            logger.info("Selenium and geckodriver are working")
-        else:
-            logger.error("Please check if selenium and gekodriver are installed")
-    except Exception as e:
-        logger.error(e)
     try:
         browser.get('https://www.linkedin.com/feed/')
         time.sleep(3)
@@ -78,8 +73,9 @@ def checkSeleniumLinkedIn():
     finally:
         browser.quit()
 
-check_python()
-check_pip()
-check_selenium()
-check_connection()
-checkSeleniumLinkedIn()
+if __name__ == "__main__":
+    check_python()
+    check_pip()
+    check_selenium()
+    check_connection()
+    checkSeleniumLinkedIn()

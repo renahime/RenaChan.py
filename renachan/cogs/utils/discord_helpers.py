@@ -1,9 +1,6 @@
 import discord
-import asyncio
 from discord.ext import commands
 from .crawler import CreepyCrawler
-import logging
-import renachan
 import renachan.managers.models as models
 from datetime import datetime
 import time as time
